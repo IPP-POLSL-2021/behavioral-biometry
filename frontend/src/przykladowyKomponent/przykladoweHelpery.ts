@@ -1,7 +1,7 @@
 import { TIMEOUT } from '../constants'
 
-export const getMessageFromServer = () => {
-  return Promise.resolve(() => {
-    return setTimeout(() => "Jebać disa", TIMEOUT)
+export const getMessageFromServer = (jp2gmd: boolean) => {
+  return new Promise<string>((resolve, reject) => {
+    setTimeout(() => {jp2gmd ? resolve("Tak") : reject("Nie")}, TIMEOUT);
   })
 }
