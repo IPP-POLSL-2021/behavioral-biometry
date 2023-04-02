@@ -1,9 +1,11 @@
-import WordState from "./przykladowyKomponent2";
+import WordState from "./WordState";
 
 import "./App.css";
 
 function App() {
-  return <WordState />;
+  return (
+    <WordState word="kriskros" />
+  );
 }
 
 export default App;
