@@ -24,7 +24,6 @@ const Token: React.FC<TokenProps> = ({symbol, downTimestamp, upTimestamp, isCurs
 
 const WordState: React.FC<{word: string}> = ({ word }) => {
   const [ letters, setLetters ] = useState(sentenceToLetterStates(word));
-  const [testState, setTestState] = useState(0)
   const lastDownIndex = getLastIndex(letters, (letter) => Boolean(letter.downTimestamp));
   
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -32,11 +31,10 @@ const WordState: React.FC<{word: string}> = ({ word }) => {
     if (currentIndex == -1) {
       return;
     }
-    console.log(lastDownIndex)
     setLetters(
       replaceWithNew(letters, currentIndex, (item) => ({...item, downTimestamp: Date.now()}))
     );
-  }, [letters, testState]);
+  }, [letters]);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     const currentIndex = letters.findIndex(letter => event.key === letter.symbol && letter.downTimestamp && !letter.upTimestamp);
