@@ -38,11 +38,8 @@ const WordState = ({ word } : { word: string }) => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     setLetters((current) => {
-      const currentIndex = current.findIndex((letter, idx) => 
-        getLastIndex(current, (letter) => Boolean(letter.downTimestamp)) === idx - 1 
-        && event.key === letter.symbol 
-        && !letter.downTimestamp
-      );
+      const lastDownIndex = getLastIndex(current, (v) => Boolean(v.downTimestamp));
+      const currentIndex = current.findIndex((letter, idx) => lastDownIndex === idx - 1 && event.key === letter.symbol && !letter.downTimestamp);
       if (currentIndex == -1) {
         return current;
       }
