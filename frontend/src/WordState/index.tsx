@@ -38,11 +38,12 @@ const WordState = ({ word } : { word: string }) => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     setLetters((current) => {
-      const currentIndex = current.findIndex(letter => event.key === letter.symbol && !letter.downTimestamp);
+      const lastDownIndex = getLastIndex(current, (v) => Boolean(v.downTimestamp));
+      const currentIndex = current.findIndex((letter, idx) => lastDownIndex === idx - 1 && event.key === letter.symbol && !letter.downTimestamp);
       if (currentIndex == -1) {
         return current;
       }
-      return replaceWithNew(current, currentIndex, (item) => ({...item, downTimestamp: 1}));
+      return replaceWithNew(current, currentIndex, (item) => ({...item, downTimestamp: Date.now()}));
     });
   };
 
@@ -52,7 +53,7 @@ const WordState = ({ word } : { word: string }) => {
       if (currentIndex == -1) {
         return current;
       }
-      return replaceWithNew(current, currentIndex, (item) => ({...item, upTimestamp: 1}));
+      return replaceWithNew(current, currentIndex, (item) => ({...item, upTimestamp: Date.now()}));
     });
   };
 
