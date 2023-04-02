@@ -1,9 +1,9 @@
-export type Iletter = {
-  letter: string,
+export type Itoken = {
+  symbol: string,
   downTimestamp?: number,
   upTimestamp?: number,
 }
 
-export interface LetterProps extends Iletter {
-  isCursorPresent: boolean;
+export interface TokenProps extends Itoken {
+  isCursorPresent: boolean,
 };

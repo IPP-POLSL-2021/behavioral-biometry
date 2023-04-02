@@ -3,38 +3,29 @@
     letter-spacing: 0.2rem;
 }
 
-.cursor {
-    position: absolute;
-    margin-left: -0.5rem;
-    color: #f6c177;
-}
-
-.blinking_cursor {
-    animation: blink 1s infinite;
-}
-  
 .letter {
   position: relative;
   opacity: 0.3;
 
   &.letterDown {
     opacity: 1;
-    &.cursorPresent::after {
-      content: " ";
-      position: absolute;
-      display: block;
-      right: 0;
-      top: 0;
-      width: 4px;
-      height: 100%;
-      background-color: #f6c177;
-      animation: blink 1s infinite;
-    }
   }
 
   &.letterUp {
+    opacity: 1;
     color: green;
   }
+}
+
+.cursorPresent::after {
+  content: " ";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background-color: #f6c177;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {
