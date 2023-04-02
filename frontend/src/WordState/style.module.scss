@@ -1,0 +1,35 @@
+.word {
+    font-size: 4rem;
+    letter-spacing: 0.2rem;
+}
+
+.letter {
+  position: relative;
+  opacity: 0.3;
+
+  &.letterDown {
+    opacity: 1;
+  }
+
+  &.letterUp {
+    opacity: 1;
+    color: green;
+  }
+}
+
+.cursorPresent::after {
+  content: " ";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background-color: #f6c177;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+      opacity: 0;
+  }
+}
