@@ -42,7 +42,7 @@ const WordState = ({ word } : { word: string }) => {
       if (currentIndex == -1) {
         return current;
       }
-      return replaceWithNew(current, currentIndex, (item) => ({...item, downTimestamp: 1}));
+      return replaceWithNew(current, currentIndex, (item) => ({...item, downTimestamp: Date.now()}));
     });
   };
 
@@ -52,7 +52,7 @@ const WordState = ({ word } : { word: string }) => {
       if (currentIndex == -1) {
         return current;
       }
-      return replaceWithNew(current, currentIndex, (item) => ({...item, upTimestamp: 1}));
+      return replaceWithNew(current, currentIndex, (item) => ({...item, upTimestamp: Date.now()}));
     });
   };
 
