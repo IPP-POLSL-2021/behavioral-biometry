@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import { TokenProps } from "./interfaces";
 
@@ -22,10 +22,27 @@ const Token: React.FC<TokenProps> = ({symbol, downTimestamp, upTimestamp, isCurs
   )
 }
 
-const WordState = ({ word } : { word: string }) => {
+const WordState: React.FC<{word: string}> = ({ word }) => {
   const [ letters, setLetters ] = useState(sentenceToLetterStates(word));
-
   const lastDownIndex = getLastIndex(letters, (letter) => Boolean(letter.downTimestamp));
+  
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    const currentIndex = letters.findIndex((letter, idx) => lastDownIndex === idx - 1 && event.key === letter.symbol && !letter.downTimestamp);
+    if (currentIndex == -1) {
+      return;
+    }
+    setLetters(
+      replaceWithNew(letters, currentIndex, (item) => ({...item, downTimestamp: Date.now()}))
+    );
+  }, [letters]);
+
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
+    const currentIndex = letters.findIndex(letter => event.key === letter.symbol && letter.downTimestamp && !letter.upTimestamp);
+    if (currentIndex == -1) {
+      return;
+    }
+    setLetters(replaceWithNew(letters, currentIndex, (item) => ({...item, upTimestamp: Date.now()})));
+  }, [letters]);
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -34,28 +51,7 @@ const WordState = ({ word } : { word: string }) => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    setLetters((current) => {
-      const lastDownIndex = getLastIndex(current, (v) => Boolean(v.downTimestamp));
-      const currentIndex = current.findIndex((letter, idx) => lastDownIndex === idx - 1 && event.key === letter.symbol && !letter.downTimestamp);
-      if (currentIndex == -1) {
-        return current;
-      }
-      return replaceWithNew(current, currentIndex, (item) => ({...item, downTimestamp: Date.now()}));
-    });
-  };
-
-  const handleKeyUp = (event: KeyboardEvent) => {
-    setLetters((current) => {
-      const currentIndex = current.findIndex(letter => event.key === letter.symbol && letter.downTimestamp && !letter.upTimestamp);
-      if (currentIndex == -1) {
-        return current;
-      }
-      return replaceWithNew(current, currentIndex, (item) => ({...item, upTimestamp: Date.now()}));
-    });
-  };
+  }, [handleKeyDown, handleKeyUp]);
 
   return (
     <div className={`${styles.word}`}>
