@@ -1,14 +1,19 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import styles from "./style.module.scss";
 import loginLogo from "./loginLogo.svg";
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <header className={styles.header}>
-      <Link to={"login"} replace>
+      <a
+        onClick={() => {
+          navigate('/login')
+        }}
+      >
         <img src={loginLogo} alt="login" />
-      </Link>
+      </a>
     </header>
   );
 }
