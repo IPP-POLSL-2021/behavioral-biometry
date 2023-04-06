@@ -7,4 +7,12 @@
 
 img {
     filter: invert(51%) sepia(98%) saturate(391%) hue-rotate(9deg) brightness(92%) contrast(87%);
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &:active {
+        opacity: 0.3;
+    }
 }
