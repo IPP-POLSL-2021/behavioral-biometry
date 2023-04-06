@@ -1,3 +1,7 @@
+:root {
+  --main-color: #b39119;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -8,6 +12,7 @@
 
 .main * {
   font-size: 24px;
+  color: var(--text-color);
 }
 
 .username,
@@ -28,7 +33,7 @@
 
 .button {
   margin-top: 10px;
-  background: #2c2e31;
+  background: var(--main-color);
   border: none;
   border-radius: 8px;
   padding: 10px 24px;
