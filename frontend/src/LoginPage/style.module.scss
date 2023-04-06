@@ -1,0 +1,46 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.main * {
+  font-size: 24px;
+}
+
+.username,
+.password {
+  display: block;
+  margin: 10px 0;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 12px 8px;
+  border-radius: 8px;
+}
+
+.button_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  margin-top: 10px;
+  background: #2c2e31;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+
+  &:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    filter: brightness(80%);
+  }
+
+  &:active {
+    transform: translateY(4px);
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.3);
+  }
+}
