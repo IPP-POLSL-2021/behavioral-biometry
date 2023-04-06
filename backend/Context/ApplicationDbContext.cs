@@ -10,6 +10,8 @@ namespace backend.Context
             
         }
 
-        DbSet<testModel> testModel { get; set; }
+        public DbSet<testModel> testModel { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<AccessTokens> accessTokens { get; set; }
     }
 }
