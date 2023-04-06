@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")?.Replace("<DBPASSWORD>", Environment.GetEnvironmentVariable("DBPASSWORD"));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
