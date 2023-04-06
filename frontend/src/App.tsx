@@ -5,7 +5,7 @@ export default function App() {
   return (
     <>
       <Header />
-      <WordState word="kriskros" />
+      <WordState word=".tie5ronal" />
     </>
   );
 }
