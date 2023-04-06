@@ -1,11 +1,11 @@
 import WordState from "./WordState";
+import Header from "./Header";
 
-import "./App.css";
-
-function App() {
+export default function App() {
   return (
-    <WordState word="kriskros" />
+    <>
+      <Header />
+      <WordState word="kriskros" />
+    </>
   );
 }
-
-export default App;

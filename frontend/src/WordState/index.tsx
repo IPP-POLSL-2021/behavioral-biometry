@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { TokenProps } from "./interfaces";
 
@@ -54,16 +54,18 @@ const WordState: React.FC<{word: string}> = ({ word }) => {
   }, [handleKeyDown, handleKeyUp]);
 
   return (
-    <div className={`${styles.word}`}>
-      <Token symbol="" isCursorPresent={lastDownIndex === -1} />
-      {letters?.map((letter, idx) => (
-        <Token
-          key={`${letter.symbol}_${idx}`}
-          isCursorPresent={idx === lastDownIndex}
-          {...letter}
-        />
-      ))}
-    </div>
+    <main className={styles.main}>
+      <div className={`${styles.word}`}>
+        <Token symbol="" isCursorPresent={lastDownIndex === -1} />
+        {letters?.map((letter, idx) => (
+          <Token
+            key={`${letter.symbol}_${idx}`}
+            isCursorPresent={idx === lastDownIndex}
+            {...letter}
+          />
+        ))}
+      </div>
+    </main>
   )
 };
 
