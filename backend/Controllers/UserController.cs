@@ -24,6 +24,11 @@ namespace backend.Controllers
                 UserName = userCreationDto.UserName,
                 Password = userCreationDto.Password
             };
+            var usernameConflict = context.Users.Where(u => u.UserName == userCreationDto.UserName).FirstOrDefaultAsync();
+            if (usernameConflict != null)
+            {
+                return BadRequest("username taken");
+            }
             context.Add(newUser);
             await context.SaveChangesAsync();
             return Ok();
@@ -35,7 +40,7 @@ namespace backend.Controllers
             context.accessTokens.RemoveRange(context.accessTokens.Where(token => token.ExpirationDate < DateTime.UtcNow.AddSeconds(30)));
             await context.SaveChangesAsync();
 
-            var user = await context.Users.Where(x => x.UserName == userCreationDto.UserName).Where(x => x.Password == userCreationDto.Password).FirstAsync();
+            var user = await context.Users.Where(x => x.UserName == userCreationDto.UserName).Where(x => x.Password == userCreationDto.Password).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -68,7 +73,7 @@ namespace backend.Controllers
         [HttpGet("current")]
         public async Task<ActionResult> GetCurrent()
         {
-            var requestToken = new Guid(Request.Headers.Authorization);
+            var requestToken = new Guid(Request.Headers.Authorization.ToString());
             context.accessTokens.RemoveRange(context.accessTokens.Where(token => token.ExpirationDate < DateTime.UtcNow.AddSeconds(30)));
             await context.SaveChangesAsync();
             var accesstoken = await context.accessTokens.Include(t => t.user).Where(t => t.Id == requestToken).FirstOrDefaultAsync();
@@ -96,7 +101,7 @@ namespace backend.Controllers
             }
             context.accessTokens.Remove(token);
             await context.SaveChangesAsync();
-            return Ok(token);
+            return Ok();
         }
     }
 }
