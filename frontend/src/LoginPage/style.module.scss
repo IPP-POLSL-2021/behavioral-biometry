@@ -1,5 +1,6 @@
 :root {
-  --main-color: #b39119;
+  --main-color: #dfb312;
+  --btn-text-color: #fff;
 }
 
 .main {
@@ -34,6 +35,7 @@
 .button {
   margin-top: 10px;
   background: var(--main-color);
+  color: var(--btn-text-color);
   border: none;
   border-radius: 8px;
   padding: 10px 24px;
