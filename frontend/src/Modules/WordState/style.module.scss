@@ -1,13 +1,8 @@
-:root {
-  --correct-text-color: green;
-  --caret-color: #e2b714;
-}
-
 .main {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .word {

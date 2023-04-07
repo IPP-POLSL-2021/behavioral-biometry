@@ -1,31 +1,11 @@
+import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import { FormEvent, useState } from "react";
-import { useCookies } from "react-cookie";
-
-export default function LoginPage() {
-  const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
-
-  return cookies.access_token ? <LoggedIn removeCookie={removeCookie} /> : <LoginForm setCookie={setCookie} />
-}
-
-function LoggedIn({removeCookie}: {removeCookie: any}) {
-
-  const logOut = () => {
-      removeCookie("access_token", {path: "/"});
-  }
-
-  return (
-    <div className={styles.main}>
-      <div className={styles.loggedInMessage}>You are already logged in!</div>
-      <button className={styles.button} onClick={logOut}>Log out</button>
-    </div>
-  )
-}
-
 
 function LoginForm({setCookie}: {setCookie: any}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
    const getRequest = (url: string, headers: any) => {
     fetch(url, {
@@ -36,7 +16,8 @@ function LoginForm({setCookie}: {setCookie: any}) {
     .then(data => {
       console.log(data);
       setUsername("");
-      setPassword("");   
+      setPassword("");
+      navigate("/");
     }))
     .catch(err => console.error(err));
   }
@@ -101,3 +82,5 @@ function LoginForm({setCookie}: {setCookie: any}) {
     </div>
   );
 }
+
+export default LoginForm

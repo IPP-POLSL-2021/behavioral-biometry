@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-import { TokenProps } from "./interfaces";
+import { TokenProps, Itoken } from "./interfaces";
 
 import { sentenceToLetterStates, replaceWithNew, getLastIndex, convertPayload } from "./helpers";
 
@@ -22,7 +22,7 @@ const Token: React.FC<TokenProps> = ({symbol, downTimestamp, upTimestamp, isCurs
   )
 }
 
-const WordState: React.FC<{word: string}> = ({ word }) => {
+const WordState: React.FC<{word: string, onCompleted: (letters: Itoken[]) => void}> = ({ word, onCompleted }) => {
   const [ letters, setLetters ] = useState(sentenceToLetterStates(word));
   const lastDownIndex = getLastIndex(letters, (letter) => Boolean(letter.downTimestamp));
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -54,10 +54,7 @@ const WordState: React.FC<{word: string}> = ({ word }) => {
 
   useEffect(() => {
     if(letters.every(v => v.downTimestamp && v.upTimestamp)) {
-      // @ts-ignore
-      const payload = convertPayload(letters)
-      console.log(payload)
-      fetch("http://localhost:5050/api/prompt", {method: "POST", body: JSON.stringify(payload), headers: {Authorization: '08db36d8-e7a2-406b-8a44-28152f77dce1', 'Content-Type': 'application/json'}})
+      onCompleted(letters)
       setLetters(sentenceToLetterStates(word))
     }
   }, [letters])

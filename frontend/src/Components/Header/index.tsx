@@ -9,7 +9,7 @@ export default function Header() {
     <header className={styles.header}>
       <a
         onClick={() => {
-          navigate('/login')
+          navigate('/user')
         }}
       >
         <img src={loginLogo} alt="login" />
