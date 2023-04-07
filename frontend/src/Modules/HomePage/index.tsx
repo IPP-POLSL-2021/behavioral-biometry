@@ -6,10 +6,10 @@ const HomePage = () => {
     <div>
       Home Page
       <div>
-        <a onClick={() => navigate("/offline", {replace: true})}>nologin</a>
+        <a onClick={() => navigate("/offline")}>nologin</a>
       </div>
       <div>
-        <a onClick={() => navigate("/wordstate", {replace: true})}>start</a>
+        <a onClick={() => navigate("/wordstate")}>start</a>
       </div>
     </div>
   )
