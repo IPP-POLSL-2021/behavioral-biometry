@@ -1,14 +1,55 @@
+import { useNavigate } from "react-router";
 import styles from "./style.module.scss";
 import { FormEvent, useState } from "react";
 
-export default function LoginForm() {
+function LoginForm({setCookie}: {setCookie: any}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+   const getRequest = (url: string, headers: any) => {
+    fetch(url, {
+      method: "GET",
+      headers: headers
+    })
+    .then(res => res.json()
+    .then(data => {
+      console.log(data);
+      setUsername("");
+      setPassword("");
+      navigate("/");
+    }))
+    .catch(err => console.error(err));
+  }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(username, password);
-  };
+    fetch("http://localhost:5050/api/users/auth", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({username: username, password: password})
+    })
+    .then(res => {
+      return res.ok ? res.json() : Promise.reject(res);
+    })
+    .then(token => {
+      getRequest("http://localhost:5050/api/users/current", {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': token
+      });
+      let expires = new Date();
+      expires.setTime(expires.getTime() + (15 * 60 * 1000))
+      setCookie("access_token", token, { path: "/", expires})
+    })
+    .catch(err => {
+      console.error(err);
+    });
+      
+  }
 
   return (
     <div className={styles.main}>
@@ -41,3 +82,5 @@ export default function LoginForm() {
     </div>
   );
 }
+
+export default LoginForm

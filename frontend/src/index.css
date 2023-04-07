@@ -27,7 +27,12 @@ body {
 #root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  min-width: 100vw;
+  min-height: calc(100vh - 4rem);
+  min-width: calc(100vw - 4rem);
   padding: 2rem;
+}
+
+:root {
+  --correct-text-color: green;
+  --caret-color: #e2b714;
 }
