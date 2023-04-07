@@ -7,7 +7,7 @@ function LoginForm({setCookie}: {setCookie: any}) {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-   const getRequest = (url: string, headers: any) => {
+  const getRequest = (url: string, headers: any) => {
     fetch(url, {
       method: "GET",
       headers: headers
