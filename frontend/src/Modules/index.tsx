@@ -1,6 +1,6 @@
 import Header from '../Components/Header';
 
-import LoginForm from "./LoginPage";
+import LoginForm from "../Components/LoginPage";
 import WordStateOnline from "./WordState/OnlineController";
 import WordStateOffline from "./WordState/OfflineController";
 import HomePage from './HomePage';
