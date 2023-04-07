@@ -4,6 +4,7 @@ import WordState from '..';
 import { Itoken } from '../interfaces'
 
 import { convertPayload } from "../helpers";
+import { useCookies } from "react-cookie";
 
 const tempToken = '08db36d8-e7a2-406b-8a44-28152f77dce1'
 type connectionState = 'fetching' | 'fetched' | 'error'
@@ -11,10 +12,11 @@ type connectionState = 'fetching' | 'fetched' | 'error'
 const WordStateConnection = () => {
   const [ connectionState, setConnectionState ] = useState<connectionState>('fetching')
   const [ prompt, setPrompt ] = useState<string>();
+  const [ { access_token } ] = useCookies(["access_token"]);
   
   useEffect(() => {
     fetch("http://localhost:5050/api/prompt/default", {
-      headers: {Authorization: tempToken, 'Content-Type': 'application/json'}}
+      headers: {Authorization: access_token, 'Content-Type': 'application/json'}}
     )
     .then(response => response.text())
     .then(prompt => {
@@ -34,7 +36,7 @@ const WordStateConnection = () => {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
-        Authorization: tempToken,
+        Authorization: access_token,
         'Content-Type': 'application/json'
       },
     })
