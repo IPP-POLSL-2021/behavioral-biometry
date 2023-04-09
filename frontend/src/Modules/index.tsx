@@ -1,6 +1,7 @@
 import Header from '../Components/Header';
 
-import LoginPage from "../Components/LoginPage";
+import LoginPage from "../Components/UserForm/LoginPage";
+import RegisterPage from '../Components/UserForm/RegisterPage';
 import WordStateOnline from "./WordState/OnlineController";
 import WordStateOffline from "./WordState/OfflineController";
 import HomePage from './HomePage';
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
       <Layout>
         <HomePage />
       </Layout>
+    )
+  },
+  {
+    path: "/register",
+    element: (
+			<Layout>
+				<RegisterPage />
+			</Layout>
     )
   },
   {
