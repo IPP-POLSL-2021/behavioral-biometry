@@ -1,21 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 
-import WordState from '..';
 import { Itoken } from '../interfaces'
 
 import { convertPayload } from "../helpers";
 import { useCookies } from "react-cookie";
+import WordState from "..";
 
-const tempToken = '08db36d8-e7a2-406b-8a44-28152f77dce1'
 type connectionState = 'fetching' | 'fetched' | 'error'
 
-const WordStateConnection = () => {
+const OnlineController = ({apiUrl, classNames}: {apiUrl: string, classNames?: string}) => {
   const [ connectionState, setConnectionState ] = useState<connectionState>('fetching')
   const [ prompt, setPrompt ] = useState<string>();
   const [ { access_token } ] = useCookies(["access_token"]);
   
   useEffect(() => {
-    fetch("http://localhost:5050/api/prompt/default", {
+    fetch(`${apiUrl}/prompt/default`, {
       headers: {Authorization: access_token, 'Content-Type': 'application/json'}}
     )
     .then(response => response.text())
@@ -27,12 +26,12 @@ const WordStateConnection = () => {
       setConnectionState('error')
       console.log(error);
     })
-  }, [])
+  }, [apiUrl])
 
   const onCompleted = useCallback((letters: Itoken[]) => {
     // @ts-ignore
     const payload = convertPayload(letters)
-    fetch("http://localhost:5050/api/prompt", {
+    fetch(`${apiUrl}/prompt`, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
@@ -40,7 +39,7 @@ const WordStateConnection = () => {
         'Content-Type': 'application/json'
       },
     })
-  }, [])
+  }, [apiUrl])
 
   if (connectionState == 'fetching') {
     return <span>loading</span>
@@ -50,7 +49,7 @@ const WordStateConnection = () => {
     return <span>error</span>
   }
 
-  return <WordState word={prompt!} onCompleted={onCompleted} />
+  return <WordState classNames={classNames} word={prompt!} onCompleted={onCompleted} />
 }
 
-export default WordStateConnection;
+export default OnlineController;

@@ -1,22 +1,18 @@
 import { useState, useCallback } from "react";
 
-import WordState from '..';
 import { Itoken } from '../interfaces'
 
 import { convertPayload } from "../helpers";
+import WordState from "..";
 
-// Przykład tego co oddzielenie logiki view / controller pozwala zrobić
-
-const OfflineController = () => {
-  const [ prompt, ] = useState<string>('.tie5ronal');
-
+const OfflineController = ({prompt}: {prompt: string}) => {
   const onCompleted = useCallback((letters: Itoken[]) => {
     // @ts-ignore
     const payload = convertPayload(letters)
     console.log(payload)
   }, [])
 
-  return <WordState word={prompt!} onCompleted={onCompleted} />
+  return <WordState word={prompt!} onCompleted={onCompleted} automatic />
 }
 
 export default OfflineController;

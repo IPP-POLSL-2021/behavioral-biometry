@@ -2,8 +2,7 @@ import Header from '../Components/Header';
 
 import LoginPage from "../Components/UserForm/LoginPage";
 import RegisterPage from '../Components/UserForm/RegisterPage';
-import WordStateOnline from "./WordState/OnlineController";
-import WordStateOffline from "./WordState/OfflineController";
+import WordState from "../Modules/WordState";
 import HomePage from './HomePage';
 import UserPage from './UserPage';
 
@@ -30,7 +29,7 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <ProtectedContent>
-          <WordStateOnline />
+          <WordState />
         </ProtectedContent>
       </Layout>
     ),
@@ -60,14 +59,6 @@ const router = createBrowserRouter([
         </ProtectedContent>
       </Layout>
     )
-  },
-  {
-    path: "/offline",
-    element: (
-      <Layout>
-        <WordStateOffline />
-      </Layout>
-    ),
   },
 ]);
 
