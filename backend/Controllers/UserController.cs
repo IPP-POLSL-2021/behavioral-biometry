@@ -19,16 +19,16 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(UserCreationDto userCreationDto)
         {
-            var newUser = new User
-            {
-                UserName = userCreationDto.UserName,
-                Password = EncryptionHelper.Hash(userCreationDto.Password)
-            };
             var usernameConflict = await context.Users.Where(u => u.UserName == userCreationDto.UserName).FirstOrDefaultAsync();
             if (usernameConflict != null)
             {
                 return BadRequest("username taken");
             }
+            var newUser = new User
+            {
+                UserName = userCreationDto.UserName,
+                Password = EncryptionHelper.Hash(userCreationDto.Password)
+            };
             await context.AddAsync(newUser);
             await context.SaveChangesAsync();
             return Ok();

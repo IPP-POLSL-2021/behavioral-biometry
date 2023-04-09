@@ -1,6 +1,7 @@
 import Header from '../Components/Header';
 
-import LoginForm from "../Components/LoginPage";
+import LoginPage from "../Components/UserForm/LoginPage";
+import RegisterPage from '../Components/UserForm/RegisterPage';
 import WordStateOnline from "./WordState/OnlineController";
 import WordStateOffline from "./WordState/OfflineController";
 import HomePage from './HomePage';
@@ -20,7 +21,7 @@ const Layout = ({children}: {children: JSX.Element}) => {
 const ProtectedContent = ({children}: {children: JSX.Element}) => {
   const [cookies, setCookie] = useCookies(["access_token"]);
 
-  return cookies.access_token ? children : <LoginForm setCookie={setCookie} />
+  return cookies.access_token ? children : <LoginPage setCookie={setCookie} />
 }
 
 const router = createBrowserRouter([
@@ -40,6 +41,14 @@ const router = createBrowserRouter([
       <Layout>
         <HomePage />
       </Layout>
+    )
+  },
+  {
+    path: "/register",
+    element: (
+			<Layout>
+				<RegisterPage />
+			</Layout>
     )
   },
   {
