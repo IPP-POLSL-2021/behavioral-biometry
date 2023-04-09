@@ -22,14 +22,14 @@ namespace backend.Controllers
             var newUser = new User
             {
                 UserName = userCreationDto.UserName,
-                Password = userCreationDto.Password
+                Password = EncryptionHelper.Hash(userCreationDto.Password)
             };
-            var usernameConflict = context.Users.Where(u => u.UserName == userCreationDto.UserName).FirstOrDefaultAsync();
+            var usernameConflict = await context.Users.Where(u => u.UserName == userCreationDto.UserName).FirstOrDefaultAsync();
             if (usernameConflict != null)
             {
                 return BadRequest("username taken");
             }
-            context.Add(newUser);
+            await context.AddAsync(newUser);
             await context.SaveChangesAsync();
             return Ok();
         }
@@ -40,15 +40,19 @@ namespace backend.Controllers
             context.accessTokens.RemoveRange(context.accessTokens.Where(token => token.ExpirationDate < DateTime.UtcNow.AddSeconds(30)));
             await context.SaveChangesAsync();
 
-            var user = await context.Users.Where(x => x.UserName == userCreationDto.UserName).Where(x => x.Password == userCreationDto.Password).FirstOrDefaultAsync();
+            var user = await context.Users.Where(x => x.UserName == userCreationDto.UserName).FirstOrDefaultAsync();
 
             if (user == null)
+            {
+                return NotFound();
+            }
+            if(!EncryptionHelper.Verify(userCreationDto.Password, user.Password))
             {
                 return Unauthorized();
             }
 
             var newToken = new AccessTokens { CreationDate = DateTime.UtcNow, ExpirationDate = DateTime.UtcNow.AddMinutes(15), user = user };
-            context.Add(newToken);
+            await context.AddAsync(newToken);
             await context.SaveChangesAsync();
             return Ok(newToken.Id);
         }
