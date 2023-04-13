@@ -27,21 +27,20 @@ if __name__ == "__main__":
     x_train, x_test = split(X, 0.8)
     y_train, y_test = split(Y, 0.8)
 
-    # best accuracy is with k=4, and is equal to 0.789
-    with open("result.txt", "w") as f:
-        start = time()
-        model = KNeighborsClassifier(n_neighbors=4)
-        # model = KNN(k=4)
-        model.fit(x_train, y_train)
-        predicted = model.predict(x_test)
-        accuracy = model.score(x_test, y_test)
-        # accuracy = sum(
-        #     [predicted[i] == y_test[i] for i in range(len(y_test))]
-        # ) / len(y_test)
-        print("time taken (seconds): " + str(time() - start))
-        print(f"accuracy: {round(accuracy, 3)}")
-        for i in range(len(predicted)):
-            f.write(f"Predicted: {predicted[i]}, actual: {y_test[i]}\n")
+    # best accuracy is with k=4, and is equal to 0.789, time taken: 0.66 [euclidean]
+    # best accuracy is with k=4, and is equal to 0.885, time taken: 1.07 [manhattan]
+    # knn time taken: 314seconds
+    start = time()
+    model = KNeighborsClassifier(n_neighbors=4, p=1)
+    # model = KNN(k=4)
+    model.fit(x_train, y_train)
+    predicted = model.predict(x_test)
+    accuracy = model.score(x_test, y_test)
+    # accuracy = sum(
+    #     [predicted[i] == y_test[i] for i in range(len(y_test))]
+    # ) / len(y_test)
+    print("time taken (seconds): " + str(time() - start))
+    print(f"accuracy: {round(accuracy, 3)}")
 
     # plt.figure(figsize=(10,6))
     # plt.plot(range(1,142+1, 2),acc,color = 'blue',linestyle='dashed',
@@ -52,5 +51,3 @@ if __name__ == "__main__":
     # print("Maximum accuracy:-",max(acc),"at K =",acc.index(max(acc)) + 1)
     # plt.savefig("acc_k_correlation.png")
     # plt.show()
-
-    # time taken for scikit learn knn: 0.66

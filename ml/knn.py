@@ -1,5 +1,6 @@
 from collections import Counter
 from time import time
+from scipy.spatial import distance
 
 import numpy as np
 
@@ -24,10 +25,9 @@ class KNN:
     ) -> np.ndarray[str]:
         def predict_point(x: np.ndarray[np.float64]) -> str:
             distances = np.array(
-                [np.linalg.norm(x - x_train) for x_train in self.X_train],
+                [distance.cityblock(x, x_train) for x_train in self.X_train],
                 dtype=np.float64,
             )
-            # print(time() - start)
             k_indices = np.argsort(distances)[: self.k]
             k_nearest_labels = np.array(
                 [self.Y_train[i] for i in k_indices], dtype=np.string_
