@@ -6,15 +6,23 @@ import WordStateOnline from "./WordState/OnlineController";
 import WordStateOffline from "./WordState/OfflineController";
 import HomePage from './HomePage';
 import UserPage from './UserPage';
+import { LoggedUsernameContext } from "../LoggedUsernameContext"
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useCookies } from 'react-cookie';
+import { useState } from "react";
+
 
 const Layout = ({children}: {children: JSX.Element}) => {
+  const updateUsername = (username: string) => setLoggedUsername({username: username, updateUsername: updateUsername});
+  const [loggedUsername, setLoggedUsername] = useState({username: "", updateUsername: updateUsername});
+
   return (
     <>
+    <LoggedUsernameContext.Provider value={loggedUsername}>
       <Header />
       {children}
+    </LoggedUsernameContext.Provider>
     </>
   )
 }

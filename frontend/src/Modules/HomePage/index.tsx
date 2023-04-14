@@ -4,7 +4,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   return (
     <div>
-      Home Page
       <div>
         <a onClick={() => navigate("/offline")}>nologin</a>
       </div>

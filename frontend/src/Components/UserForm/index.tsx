@@ -1,12 +1,10 @@
 import styles from "./style.module.scss";
 import { FormEvent } from "react";
+import { Status, FormData } from "./types"
 
-type Idata = {
-  username: string,
-  password: string,
-}
-
-function UserForm({title, onSubmit, data, setData, btnText}: {title: string, onSubmit: (e: FormEvent) => void, data: Idata, setData: (_: Idata) => void, btnText: string}) {
+function UserForm({title, onSubmit, data, setData, btnText, status}: 
+    {title: string, onSubmit: (e: FormEvent) => void, data: FormData, setData: (_: FormData) => void, btnText: string, status: Status}) 
+  {
   return (
     <div className={styles.form}>
       <div className={styles.title}>{title}</div>
@@ -36,7 +34,10 @@ function UserForm({title, onSubmit, data, setData, btnText}: {title: string, onS
           required
         />
         <div className={styles.button_container}>
-          <input type="submit" className={styles.button} value={btnText} />
+          <input type="submit" 
+          className={styles.button} 
+          value={btnText} 
+          disabled={(!data.username || !data.password) || status === "submitting"} />
         </div>
       </form>
     </div>
