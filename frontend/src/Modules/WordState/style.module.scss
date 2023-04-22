@@ -1,43 +1,8 @@
 .main {
-  flex: 1 1 100%;
+  flex: 1 0 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.word {
-  font-size: 6rem;
-  letter-spacing: 0.2rem;
-}
-
-.letter {
-  color: var(--text-color);
-  position: relative;
-  opacity: 0.3;
-
-  &.letterDown {
-    opacity: 1;
-  }
-
-  &.letterUp {
-    opacity: 1;
-    color: var(--correct-text-color);
-  }
-}
-
-.cursorPresent::after {
-  content: " ";
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 3px;
-  height: 100%;
-  background-color: var(--caret-color);
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
+  height: 12rem;
+  font-size: 12rem;
 }
