@@ -1,6 +1,6 @@
 .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin: 0 4rem;
 }
@@ -16,4 +16,12 @@ img {
     &:active {
         opacity: 0.3;
     }
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    gap: 20px;
 }
