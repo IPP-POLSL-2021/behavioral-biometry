@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Context;
 
@@ -10,9 +11,11 @@ using backend.Context;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230422125841_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,21 +45,6 @@ namespace backend.Migrations
                 });
 
             modelBuilder.Entity("backend.Models.Prompt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("prompt")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("prompts");
-                });
-
-            modelBuilder.Entity("backend.Models.PromptData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,28 +134,19 @@ namespace backend.Migrations
                     b.Property<int>("H_k9")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PromptId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("prompt")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PromptId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PromptData");
+                    b.ToTable("Prompt1");
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("FixedPromptId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
@@ -179,8 +158,6 @@ namespace backend.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FixedPromptId");
 
                     b.ToTable("Users");
                 });
@@ -209,34 +186,6 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("user");
-                });
-
-            modelBuilder.Entity("backend.Models.PromptData", b =>
-                {
-                    b.HasOne("backend.Models.Prompt", "Prompt")
-                        .WithMany()
-                        .HasForeignKey("PromptId");
-
-                    b.HasOne("backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Prompt");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("backend.Models.User", b =>
-                {
-                    b.HasOne("backend.Models.Prompt", "FixedPrompt")
-                        .WithMany()
-                        .HasForeignKey("FixedPromptId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FixedPrompt");
                 });
 #pragma warning restore 612, 618
         }

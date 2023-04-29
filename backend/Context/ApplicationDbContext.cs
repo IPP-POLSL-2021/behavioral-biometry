@@ -1,5 +1,6 @@
 ﻿using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace backend.Context
 {
@@ -13,6 +14,7 @@ namespace backend.Context
         public DbSet<testModel> testModel { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<AccessTokens> accessTokens { get; set; }
-        public DbSet<Prompt1> Prompt1 { get; set; }
+        public DbSet<Prompt> prompts { get; set; }
+        public DbSet<PromptData> PromptData { get; set; }
     }
 }

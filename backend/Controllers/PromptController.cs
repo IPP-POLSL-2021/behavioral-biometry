@@ -10,20 +10,66 @@ namespace backend.Controllers
     [Route("api/prompt")]
     public class PromptController : ControllerBase
     {
+        static int x = 10;
         private readonly ApplicationDbContext context;
         public PromptController(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        [HttpGet("default")]
-        public async Task<ActionResult> defaultPrompt()
+        public static string GetRandomAlphaNumeric(int length)
         {
-            return Ok(Prompt1.prompt);
+            return Path.GetRandomFileName().Replace(".", "").Substring(0, length);
+        }
+
+        [HttpGet("random")]
+        public OkObjectResult getRandom()
+        {
+            return Ok(GetRandomAlphaNumeric(10));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> getPrompt()
+        {
+            Guid requestToken;
+            if(!Guid.TryParse(Request.Headers.Authorization.ToString(), out requestToken))
+            {
+                return BadRequest();
+            }
+            var accesstoken = await context.accessTokens.Include(t => t.user).Include(t => t.user.FixedPrompt).Where(t => t.Id == requestToken).FirstOrDefaultAsync();
+            if (accesstoken == null) {
+                return BadRequest();
+            }
+            int fixedPrompts = context.PromptData.Where(p => p.User.Id == accesstoken.user.Id && p.PromptId != null).Count();
+            int randomPrompts = context.PromptData.Where(p => p.User.Id == accesstoken.user.Id && p.PromptId == null).Count();
+
+            if(fixedPrompts < x)
+            {
+                return Ok(accesstoken.user.FixedPrompt.prompt);
+            }
+            if(randomPrompts < x)
+            {
+                return Ok(GetRandomAlphaNumeric(10));
+            }
+            return NoContent();
+        }
+
+        [HttpPost("create")]
+        public async Task<ActionResult> createPrompt(PromptCreationDto data)
+        {
+            if (data.Data.Length > 10)
+            {
+                return BadRequest();
+            }
+            var prompt = new Prompt { prompt = data.Data };
+
+            context.Add(prompt);
+            await context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<ActionResult> post(Prompt1Dto prompt)
+        public async Task<ActionResult> post(PromptDataDto prompt)
         {
             context.accessTokens.RemoveRange(context.accessTokens.Where(token => token.ExpirationDate < DateTime.UtcNow.AddSeconds(30)));
             await context.SaveChangesAsync();
@@ -35,51 +81,61 @@ namespace backend.Controllers
                 return Unauthorized();
             }
 
-            var newPrompt1 = new Prompt1
+            var p = await context.prompts.Where(p => p.prompt == prompt.Prompt).FirstOrDefaultAsync();
+
+            var newPrompt1 = new PromptData
             {
-                user = accesstoken.user,
 
-                H_period = prompt.H_period,
+                User = accesstoken.user,
+                Prompt = p,
 
-                DD_period_t = prompt.DD_period_t,
-                DU_period_t = prompt.DU_period_t,
-                H_t = prompt.H_t,
+                H_k1 = prompt.H_k1,
 
-                DD_t_i = prompt.DD_t_i,
-                DU_t_i = prompt.DU_t_i,
-                H_i = prompt.H_i,
+                DD_k1_k2 = prompt.DD_k1_k2,
+                DU_k1_k2 = prompt.DU_k1_k2,
+                H_k2 = prompt.H_k2,
 
-                DD_i_e = prompt.DD_i_e,
-                DU_i_e = prompt.DU_i_e,
-                H_e = prompt.H_e,
+                DD_k2_k3 = prompt.DD_k2_k3,
+                DU_k2_k3 = prompt.DU_k2_k3,
+                H_k3 = prompt.H_k3,
 
-                DD_e_five = prompt.DD_e_five,
-                DU_e_five = prompt.DU_e_five,
-                H_five = prompt.H_five,
+                DD_k3_k4 = prompt.DD_k3_k4,
+                DU_k3_k4 = prompt.DU_k3_k4,
+                H_k4 = prompt.H_k4,
 
-                DD_five_r = prompt.DD_five_r,
-                DU_five_r = prompt.DU_five_r,
-                H_r = prompt.H_r,
+                DD_k4_k5 = prompt.DD_k4_k5,
+                DU_k4_k5 = prompt.DU_k4_k5,
+                H_k5 = prompt.H_k5,
 
-                DD_r_o = prompt.DD_r_o,
-                DU_r_o = prompt.DU_r_o,
-                H_o = prompt.H_o,
+                DD_k5_k6 = prompt.DD_k5_k6,
+                DU_k5_k6 = prompt.DU_k5_k6,
+                H_k6 = prompt.H_k6,
 
-                DD_o_n = prompt.DD_o_n,
-                DU_o_n = prompt.DU_o_n,
-                H_n = prompt.H_n,
+                DD_k6_k7 = prompt.DD_k6_k7,
+                DU_k6_k7 = prompt.DU_k6_k7,
+                H_k7 = prompt.H_k7,
 
-                DD_n_a = prompt.DD_n_a,
-                DU_n_a = prompt.DU_n_a,
-                H_a = prompt.H_a,
+                DD_k7_k8 = prompt.DD_k7_k8,
+                DU_k7_k8 = prompt.DU_k7_k8,
+                H_k8 = prompt.H_k8,
 
-                DD_a_l = prompt.DD_a_l,
-                DU_a_l = prompt.DU_a_l,
-                H_l = prompt.H_l,
+                DD_k8_k9 = prompt.DD_k8_k9,
+                DU_k8_k9 = prompt.DU_k8_k9,
+                H_k9 = prompt.H_k9,
+
+                DD_k9_k10 = prompt.DD_k9_k10,
+                DU_k9_k10 = prompt.DU_k9_k10,
+                H_k10 = prompt.H_k10,
             };
 
             context.Add(newPrompt1);
             await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("test")]
+        public async Task<ActionResult> test(PromptDataDto prompt)
+        {
             return Ok();
         }
     }

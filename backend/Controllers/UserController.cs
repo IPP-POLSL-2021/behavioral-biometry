@@ -3,6 +3,7 @@ using backend.DTO;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace backend.Controllers
 {
@@ -16,6 +17,11 @@ namespace backend.Controllers
             this.context = context;
         }
 
+        public static string GetRandomAlphaNumeric(int length)
+        {
+            return Path.GetRandomFileName().Replace(".", "").Substring(0, length);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post(UserCreationDto userCreationDto)
         {
@@ -24,11 +30,19 @@ namespace backend.Controllers
             {
                 return BadRequest("username taken");
             }
+
+            var prompt = new Prompt
+            {
+                prompt = GetRandomAlphaNumeric(10)
+            };
+
             var newUser = new User
             {
                 UserName = userCreationDto.UserName,
-                Password = EncryptionHelper.Hash(userCreationDto.Password)
+                Password = EncryptionHelper.Hash(userCreationDto.Password),
+                FixedPrompt = prompt
             };
+            await context.AddAsync(prompt);
             await context.AddAsync(newUser);
             await context.SaveChangesAsync();
             return Ok();
@@ -55,6 +69,12 @@ namespace backend.Controllers
             await context.AddAsync(newToken);
             await context.SaveChangesAsync();
             return Ok(newToken.Id);
+        }
+
+        [HttpPost("promptAuthentication")]
+        public async Task<ActionResult> promptAuthentication(PromptDataDto userCreationDto)
+        {
+            return Ok();
         }
 
         [HttpGet]

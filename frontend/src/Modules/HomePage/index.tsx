@@ -1,17 +1,13 @@
+import { useState } from 'react';
 import { useNavigate } from "react-router";
-import WordState from "../../Components/WordState";
 
 const HomePage = () => {
+  const [ isStarted, setStarted ] = useState(false);
   const navigate = useNavigate();
+  
   return (
     <div>
-      <div>
-        <a onClick={() => navigate("/offline")}>nologin</a>
-      </div>
-      <div>
-        <a onClick={() => navigate("/wordstate")}>start</a>
-      </div>
-      Powiem tyle że <WordState word="Linux cię wita!" onCompleted={() => {}} automatic /> Wypierdalać z uczelni.
+      <a onClick={() => navigate('/wordstate')}>authenticate</a>
     </div>
   )
 }
