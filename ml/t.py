@@ -1,4 +1,6 @@
+import csv
 from time import time
+
 from sklearn import datasets, svm
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.metrics import accuracy_score
@@ -12,17 +14,21 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from utils import load_keystroke, normalize
 from tqdm.contrib import tzip
 
+delimiter = ";"
+decimal = ","
+
 def test(data, classifier):
     X_train, X_test, y_train, y_test = train_test_split(
         data.data, data.target, test_size=0.2
     )
     X_train, X_test = normalize(X_train), normalize(X_test)
-    start = time()    
+    start = time()
     clf = classifier.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     total_time = time() - start
     accuracy = accuracy_score(y_test, y_pred)
     return round(accuracy, 4), round(total_time, 5)
+
 
 names = [
     "Nearest Neighbors",
@@ -50,10 +56,31 @@ classifiers = [
     HistGradientBoostingClassifier(max_iter=1000),
 ]
 
-for name, classifier in tzip(names, classifiers):
-    print(f"\n{name}:\n")
-    print(f"Iris {test(datasets.load_iris(), classifier)}")
-    print(f"Wine {test(datasets.load_wine(), classifier)}")
-    print(f"Breast Cancer {test(datasets.load_breast_cancer(), classifier)}")
-    print(f"Digits {test(datasets.load_digits(), classifier)}")
-    print(f"KeyStrokeDynamics {test(load_keystroke(), classifier)}")
+datasets = [
+    ("Iris", datasets.load_iris()),
+    ("Wine", datasets.load_wine()),
+    ("Breast Cancer", datasets.load_breast_cancer()),
+    ("Digits", datasets.load_digits()),
+    ("KeyStrokeDynamics", load_keystroke()),
+]
+
+with open('accuracy_table.csv', 'w', newline='') as accuracy_file, open('time_table.csv', 'w', newline='') as time_file:
+    accuracy_writer = csv.writer(accuracy_file, delimiter=delimiter, quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator='\n')
+    time_writer = csv.writer(time_file, delimiter=delimiter, quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator='\n')
+    
+    # Write headers
+    accuracy_writer.writerow(["Classifier"] + [name for name, _ in datasets])
+    time_writer.writerow(["Classifier"] + [name for name, _ in datasets])
+    
+    for name, classifier in tzip(names, classifiers):
+        accuracy_row = [name]
+        time_row = [name]
+        
+        for dataset_name, dataset in datasets:
+            accuracy, total_time = test(dataset, classifier)
+            accuracy_row.append(f"{accuracy:.4f}".replace(".", decimal))
+            time_row.append(f"{total_time:.5f}".replace(".", decimal))
+            
+        accuracy_writer.writerow(accuracy_row)
+        time_writer.writerow(time_row)
+
