@@ -71,20 +71,14 @@ namespace backend.Controllers
             return Ok(newToken.Id);
         }
 
-        [HttpPost("promptAuthentication")]
-        public async Task<ActionResult> promptAuthentication(PromptDataDto userCreationDto)
-        {
-            return Ok();
-        }
-
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
             var token = Request.Headers.Authorization;
             context.accessTokens.RemoveRange(context.accessTokens.Where(token => token.ExpirationDate < DateTime.UtcNow.AddSeconds(30)));
             await context.SaveChangesAsync();
-            var usersDto = await context.Users.Select(u => new UserDto { UserName = u.UserName, Id = u.Id }).ToListAsync();
-            return Ok(usersDto);
+            var usersDtos = await context.Users.Select(u => new UserDto { UserName = u.UserName, Id = u.Id }).ToListAsync();
+            return Ok(usersDtos);
         }
 
         [HttpGet("{id}")]
@@ -92,6 +86,25 @@ namespace backend.Controllers
         {
             var userQuery = await context.Users.Where(x => x.Id == id).FirstAsync();
             return Ok(new UserDto { UserName = userQuery.UserName, Id = userQuery.Id });
+        }
+
+        [HttpGet("{id}/prompt")]
+        public async Task<ActionResult> GetPrompt(int? id)
+        {
+            var userQuery = await context.Users.Where(x => x.Id == id).Include(u => u.FixedPrompt).FirstAsync();
+            return Ok(userQuery.FixedPrompt.prompt);
+        }
+
+        [HttpPost("{id}/fixed")]
+        public async Task<ActionResult> fixedAuthentication(int? userId)
+        {
+            return Ok(true);
+        }
+
+        [HttpPost("{id}/flex")]
+        public async Task<ActionResult> flexAuthentication(int? userId)
+        {
+            return Ok(true);
         }
 
         [HttpGet("current")]

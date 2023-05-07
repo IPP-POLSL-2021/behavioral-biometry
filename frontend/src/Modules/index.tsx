@@ -49,9 +49,7 @@ const router = createBrowserRouter([
     path: "/wordstate",
     element: (
       <Layout>
-        <ProtectedContent>
-          <WordState />
-        </ProtectedContent>
+        <WordState />
       </Layout>
     ),
   },

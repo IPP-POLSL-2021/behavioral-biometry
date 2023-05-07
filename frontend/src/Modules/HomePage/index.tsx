@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router";
+import styles from './style.module.scss';
+import OnlineController from '../../Components/WordState/OnlineController';
+
 
 const HomePage = () => {
   const [ isStarted, setStarted ] = useState(false);

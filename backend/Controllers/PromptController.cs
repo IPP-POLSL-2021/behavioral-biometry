@@ -28,7 +28,23 @@ namespace backend.Controllers
             return Ok(GetRandomAlphaNumeric(10));
         }
 
-        [HttpGet]
+        [HttpGet("fixed")]
+        public async Task<ActionResult> getFixedPrompt()
+        {
+            Guid requestToken;
+            if (!Guid.TryParse(Request.Headers.Authorization.ToString(), out requestToken))
+            {
+                return BadRequest();
+            }
+            var accesstoken = await context.accessTokens.Include(t => t.user).Include(t => t.user.FixedPrompt).Where(t => t.Id == requestToken).FirstOrDefaultAsync();
+            if (accesstoken == null)
+            {
+                return BadRequest();
+            }
+            return Ok(accesstoken.user.FixedPrompt.prompt);
+        }
+
+        [HttpGet("authenticationProfile")]
         public async Task<ActionResult> getPrompt()
         {
             Guid requestToken;
@@ -68,7 +84,7 @@ namespace backend.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("authenticationProfile")]
         public async Task<ActionResult> post(PromptDataDto prompt)
         {
             context.accessTokens.RemoveRange(context.accessTokens.Where(token => token.ExpirationDate < DateTime.UtcNow.AddSeconds(30)));

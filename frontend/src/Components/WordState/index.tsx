@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 import { Itoken } from "./interfaces";
 
@@ -6,7 +6,7 @@ import { sentenceToLetterStates, replaceWithNew, getLastIndex } from "./helpers"
 import AutomaticHandler from "./AutomaticHandler";
 import ManualHandler from "./ManualHandler";
 
-const WordState = ({word, onCompleted, automatic, classNames}: {word: string, onCompleted: (tokens: Itoken[]) => void, automatic?: boolean, classNames?: string}) => {
+const WordState = ({word, onCompleted, automatic, classNames, restartOnCompleted}: {word: string, onCompleted: (tokens: Itoken[]) => void, automatic?: boolean, classNames?: string, restartOnCompleted?: boolean}) => {
   const [ letters, setLetters ] = useState(sentenceToLetterStates(word));
   const lastDownIndex = getLastIndex(letters, (letter) => Boolean(letter.downTimestamp)); // this should not be here. make it work on state based index
   const lastUpIndex = getLastIndex(letters, (letter) => Boolean(letter.upTimestamp));
@@ -15,12 +15,16 @@ const WordState = ({word, onCompleted, automatic, classNames}: {word: string, on
     setLetters(letters => replaceWithNew(letters, index, (item) => ({...item, downTimestamp: new Date().getTime()})));
   }, [letters]);
 
+  useEffect(() => {
+    setLetters(sentenceToLetterStates(word));
+  }, [word])
+
   const setLetterBackUp = useCallback((index: number = lastUpIndex + 1) => {
     setLetters(letters => replaceWithNew(letters, index, (item) => ({...item, upTimestamp: new Date().getTime()})));
   }, [letters]);
 
   const onPromptFilled = (tokens: Itoken[]) => {
-    setLetters(sentenceToLetterStates(word))
+    restartOnCompleted && setLetters(sentenceToLetterStates(word))
     onCompleted(tokens)
   }
 

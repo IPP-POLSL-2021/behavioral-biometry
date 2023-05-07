@@ -8,16 +8,12 @@ import WordState from "..";
 
 type connectionState = 'fetching' | 'fetched' | 'error'
 
-const OnlineController = ({apiUrl, classNames}: {apiUrl: string, classNames?: string}) => {
+const OnlineController = ({apiUrl, classNames, onFinished, continueAfter, restartOnCompleted}: {continueAfter?: boolean, apiUrl: string, classNames?: string, onFinished?: (letters: Itoken[]) => void, restartOnCompleted?: boolean}) => {
   const [ connectionState, setConnectionState ] = useState<connectionState>('fetching')
   const [ prompt, setPrompt ] = useState<string | null>(null);
   const [ { access_token } ] = useCookies(["access_token"]);
-  
-  useEffect(() => {
-    fetchNew()
-  }, [apiUrl])
 
-  const fetchNew = () => {
+  const fetchNew = useCallback(() => {
     fetch(apiUrl, {
       headers: {Authorization: access_token, 'Content-Type': 'application/json'}
     }
@@ -33,21 +29,18 @@ const OnlineController = ({apiUrl, classNames}: {apiUrl: string, classNames?: st
     .catch(() => {
       setConnectionState('error')
     })
-  }
+  }, [apiUrl])
+
+  useEffect(() => {
+    fetchNew()
+  }, [fetchNew])
 
   const onCompleted = useCallback((letters: Itoken[]) => {
-    // @ts-ignore
-    const payload = convertPayload(letters)
-    fetch(apiUrl, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        Authorization: access_token,
-        'Content-Type': 'application/json'
-      },
-    })
-    fetchNew()
-  }, [apiUrl])
+    onFinished && onFinished(letters);
+    if(continueAfter) {
+      fetchNew();
+    }
+  }, [fetchNew, onFinished, continueAfter])
 
   if (connectionState == 'fetching') {
     return <span>loading</span>
@@ -60,7 +53,7 @@ const OnlineController = ({apiUrl, classNames}: {apiUrl: string, classNames?: st
   if (!prompt) {
     return <span>auth complete</span>
   }
-  return <WordState classNames={classNames} word={prompt!} onCompleted={onCompleted} />
+  return <WordState restartOnCompleted={restartOnCompleted} classNames={classNames} word={prompt!} onCompleted={onCompleted} />
 }
 
 export default OnlineController;
