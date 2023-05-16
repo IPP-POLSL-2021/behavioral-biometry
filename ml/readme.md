@@ -1,0 +1,1 @@
+uvicorn app:serve --env-file .env --reload
