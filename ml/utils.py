@@ -10,7 +10,7 @@ def normalize(dat):
     return (dat - mn) / (mx - mn)
 
 
-def split(dat, train_size):
+def split(dat, train_size: float):
     """Split list into 2 smaller lists given by fraction."""
     idx = int(len(dat) * train_size)
     return dat[:idx], dat[idx:]
@@ -25,3 +25,13 @@ def load_keystroke():
     X = X.T
     Y = np.array(df.loc[:, "subject"])
     return Bunch(data=X, target=Y)
+
+
+def flattenListOfObjects(listOfDict):
+    if len(listOfDict) == 0:
+        return {}
+    newDict = {key: [] for key in listOfDict[0].keys()}
+    for obj in listOfDict:
+        for k in obj.keys():
+            newDict[k].append(obj[k])
+    return newDict

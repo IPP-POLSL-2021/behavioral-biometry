@@ -5,6 +5,10 @@ import { convertPayload } from "../../Components/WordState/helpers";
 import { Itoken } from "../../Components/WordState/interfaces";
 
 type promptType = "fixed" | "flex" | "done";
+type User = {
+  id: number;
+  userName: string;
+};
 
 const Auth = ({ userId }: { userId: number }) => {
   const [promptType, setPromptType] = useState<promptType>("fixed");
@@ -61,25 +65,22 @@ const ProfileList = ({
 }: {
   selectUserId: (userId: number) => void;
 }) => {
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<User[]>([]);
+
   useEffect(() => {
     fetch("http://localhost:5050/api/users")
       .then((response) => response.json())
-      .then((data) => {
-        setProfiles(
-          data.map((user: any) => ({
-            username: user.userName,
-            id: user.id,
-          }))
-        );
-      });
+      .then((users: User[]) => setProfiles(users));
   }, []);
+
   return (
     <div>
       Authenticate as:
       <ul>
-        {profiles.map(({ username, id }) => (
-          <li onClick={() => selectUserId(id)}>{username}</li>
+        {profiles.map(({ id, userName }) => (
+          <li key={id} onClick={() => selectUserId(id)}>
+            {userName}
+          </li>
         ))}
       </ul>
     </div>
