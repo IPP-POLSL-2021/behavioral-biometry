@@ -24,6 +24,7 @@ sql2 = (
     " PromptId IS NOT NULL"
 )
 
+
 model = KNeighborsClassifier(n_neighbors=9, p=1)
 
 app = FastAPI()
@@ -56,8 +57,10 @@ async def test(testedUserId: int, request: Request):
         password=os.environ["PASSWORD"],
         database=os.environ["DB"],
         cursorclass=pymysql.cursors.DictCursor,
+        autocommit=True,
     )
 
+    fixedId = 0
     with connection.cursor() as cursor:
         cursor.execute(sql)
         testedUserPrompts = cursor.fetchall()
@@ -65,6 +68,7 @@ async def test(testedUserId: int, request: Request):
         userPrompts = pd.DataFrame(flattenListOfObjects(testedUserPrompts))
 
         testedPrompt = pd.Series(await request.json())
+        prompt = testedPrompt["prompt"]
         del testedPrompt["prompt"]
 
         x, y = (
@@ -74,9 +78,15 @@ async def test(testedUserId: int, request: Request):
 
         model.fit(x, y)
         y_pred = model.predict(np.array([testedPrompt.to_numpy()]))
-        if y_pred[0] == np.int64(testedUserId):
-            return True
-        return False
+
+        result = int(y_pred[0] == np.int64(testedUserId))
+        sql3 = (
+            "INSERT INTO Results (result, prompt, userId, promptType) VALUES"
+            f" ('{result}', '{prompt}', '{testedUserId}', '{fixedId}')"
+        )
+        cursor.execute(sql3)
+
+        return result
 
 
 @app.post("/flex/{testedUserId}")
@@ -87,8 +97,10 @@ async def test2(testedUserId: int, request: Request):
         password=os.environ["PASSWORD"],
         database=os.environ["DB"],
         cursorclass=pymysql.cursors.DictCursor,
+        autocommit=True,
     )
 
+    flexId = 1
     with connection.cursor() as cursor:
         cursor.execute(sql2)
         testedUserPrompts = cursor.fetchall()
@@ -96,6 +108,7 @@ async def test2(testedUserId: int, request: Request):
         userPrompts = pd.DataFrame(flattenListOfObjects(testedUserPrompts))
 
         testedPrompt = pd.Series(await request.json())
+        prompt = testedPrompt["prompt"]
         del testedPrompt["prompt"]
 
         x, y = (
@@ -105,9 +118,14 @@ async def test2(testedUserId: int, request: Request):
 
         model.fit(x, y)
         y_pred = model.predict(np.array([testedPrompt.to_numpy()]))
-        if y_pred[0] == np.int64(testedUserId):
-            return True
-        return False
+        result = int(y_pred[0] == np.int64(testedUserId))
+        sql3 = (
+            "INSERT INTO Results (result, prompt, userId, promptType) VALUES"
+            f" ('{result}', '{prompt}', '{testedUserId}', '{flexId}')"
+        )
+        cursor.execute(sql3)
+
+        return result
 
 
 @app.get("/")
