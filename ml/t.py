@@ -2,17 +2,19 @@ import csv
 from time import time
 
 from sklearn import datasets, svm
-from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
+from sklearn.ensemble import (AdaBoostClassifier,
+                              HistGradientBoostingClassifier,
+                              RandomForestClassifier)
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import HistGradientBoostingClassifier
-from utils import load_keystroke, normalize
 from tqdm.contrib import tzip
+
+from utils import load_keystroke, normalize
 
 delimiter = ";"
 decimal = ","
