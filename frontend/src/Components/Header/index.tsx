@@ -1,23 +1,27 @@
-import { useNavigate } from 'react-router-dom'
-import { useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import styles from "./style.module.scss";
 import loginLogo from "./loginLogo.svg";
-import { LoggedUsernameContext } from "../../LoggedUsernameContext"
-
+import { useCookies } from "react-cookie";
 
 export default function Header() {
   const navigate = useNavigate();
-  const loggedUsername = useContext(LoggedUsernameContext)
+  const [{ username }] = useCookies(["username"]);
 
   return (
     <header className={styles.header}>
-      <a onClick={() => { navigate("/") }}>Home page</a>
+      <a
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Home page
+      </a>
       <div className={styles.login}>
-        {loggedUsername.username && <span>Logged as {loggedUsername.username}</span>}
+        {username && <span>Logged as {username}</span>}
         <a
           onClick={() => {
-            navigate('/user')
+            navigate("/user");
           }}
         >
           <img src={loginLogo} alt="login" />

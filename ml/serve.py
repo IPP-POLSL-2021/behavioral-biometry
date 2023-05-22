@@ -53,7 +53,11 @@ async def hasAuthenticated(
 
         userPrompts = pd.DataFrame(flattenListOfObjects(testedUserPrompts))
 
-        testedPrompt = pd.Series(await request.json())
+        requestBody = await request.json()
+        loggedUserId = requestBody["loggedUserId"]
+        del requestBody["loggedUserId"]
+        testedPrompt = pd.Series(requestBody)
+
         prompt = testedPrompt["prompt"]
         del testedPrompt["prompt"]
 
@@ -68,9 +72,9 @@ async def hasAuthenticated(
 
         result = bool(y_pred[0] == np.int64(testedUserId))
         sqlInsert = (
-            "INSERT INTO Results (result, prompt, userId, promptType) VALUES"
+            "INSERT INTO Results (result, prompt, userId, promptType, loggedUserId) VALUES"
             f" ('{int(result)}', '{prompt}', '{testedUserId}',"
-            f" '{promptTypeId}')"
+            f" '{promptTypeId}', '{loggedUserId}')"
         )
         cursor.execute(sqlInsert)
 

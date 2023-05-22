@@ -1,33 +1,34 @@
 import { useCookies } from "react-cookie";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
-import { LoggedUsernameContext } from "../../LoggedUsernameContext";
 import OnlineController from "../../Components/WordState/OnlineController";
 import { Itoken } from "../../Components/WordState/interfaces";
 import { convertPayload } from "../../Components/WordState/helpers";
 
 const UserPage = () => {
-  const [ { access_token }, , removeCokie ] = useCookies(["access_token"]);
-  const [ isStarted, setStarted ] = useState(false);
-  const loggedUsername = useContext(LoggedUsernameContext);
-  const getApiUrl = "http://localhost:5050/api/prompt/authenticationProfile"
+  const [{ access_token }, , removeCookie] = useCookies([
+    "access_token",
+    "username",
+  ]);
+  const [isStarted, setStarted] = useState(false);
+  const getApiUrl = "http://localhost:5050/api/prompt/authenticationProfile";
 
   const logout = () => {
-    removeCokie("access_token", {path: '/'})
-    loggedUsername.updateUsername("");
-  }
+    removeCookie("access_token", { path: "/" });
+    removeCookie("username", { path: "/" });
+  };
 
   const onFinished = (letters: Itoken[]) => {
-    const payload = convertPayload(letters)
+    const payload = convertPayload(letters);
     fetch(getApiUrl, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
         Authorization: access_token,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-    })
-  }
+    });
+  };
 
   return (
     <div>
@@ -37,15 +38,17 @@ const UserPage = () => {
             restartOnCompleted
             continueAfter
             apiUrl={getApiUrl}
-            onFinished={onFinished}  
+            onFinished={onFinished}
           />
         </>
       ) : (
-        <button onClick={() => setStarted(true)}>Create keystrokes profile</button>
+        <button onClick={() => setStarted(true)}>
+          Create keystrokes profile
+        </button>
       )}
       <a onClick={logout}>log out</a>
     </div>
-  )
-}
+  );
+};
 
 export default UserPage;
