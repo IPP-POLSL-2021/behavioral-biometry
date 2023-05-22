@@ -53,10 +53,10 @@ async def hasAuthenticated(
 
         userPrompts = pd.DataFrame(flattenListOfObjects(testedUserPrompts))
 
-        json = await request.json()
-        loggedUserId = json["loggedUserId"]
-        del json["loggedUserId"]
-        testedPrompt = pd.Series(json)
+        requestBody = await request.json()
+        loggedUserId = requestBody["loggedUserId"]
+        del requestBody["loggedUserId"]
+        testedPrompt = pd.Series(requestBody)
 
         prompt = testedPrompt["prompt"]
         del testedPrompt["prompt"]
