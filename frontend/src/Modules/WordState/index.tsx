@@ -3,6 +3,9 @@ import OnlineController from "../../Components/WordState/OnlineController";
 import styles from "./style.module.scss";
 import { convertPayload } from "../../Components/WordState/helpers";
 import { Itoken } from "../../Components/WordState/interfaces";
+import {useContext} from "react"
+
+import {LoggedUsernameContext} from "../../LoggedUsernameContext"
 
 type promptType = "fixed" | "flex" | "done";
 type User = {
@@ -10,16 +13,18 @@ type User = {
   userName: string;
 };
 
-const Auth = ({ userId }: { userId: number }) => {
+const Auth = ({ userId, loggedUserId }: { userId: number; loggedUserId: number | undefined; }) => {
   const [promptType, setPromptType] = useState<promptType>("fixed");
   const [fixedAuth, setFixedAuth] = useState(false);
   const [flexAuth, setFlexAuth] = useState(false);
 
   const authenticateFixed = (letters: Itoken[]) => {
     const pythonEndpoint = `http://127.0.0.1:8000/fixed/${userId}`;
+    const payload = convertPayload(letters);
+    payload["loggedUserId"] = loggedUserId;
     fetch(pythonEndpoint, {
       method: "POST",
-      body: JSON.stringify(convertPayload(letters)),
+      body: JSON.stringify(payload),
     })
       .then((res) => res.json())
       .then((sucess) => setFixedAuth(sucess));
@@ -28,9 +33,11 @@ const Auth = ({ userId }: { userId: number }) => {
 
   const authenticateFlex = (letters: Itoken[]) => {
     const pythonEndpoint = `http://127.0.0.1:8000/flex/${userId}`;
+    const payload = convertPayload(letters);
+    payload["loggedUserId"] = loggedUserId;
     fetch(pythonEndpoint, {
       method: "POST",
-      body: JSON.stringify(convertPayload(letters)),
+      body: JSON.stringify(payload),
     })
       .then((res) => res.json())
       .then((sucess) => setFlexAuth(sucess));
@@ -62,15 +69,21 @@ const Auth = ({ userId }: { userId: number }) => {
 
 const ProfileList = ({
   selectUserId,
+  setLoggedUserId,
 }: {
   selectUserId: (userId: number) => void;
+  setLoggedUserId: (userId: number) => void;
 }) => {
   const [profiles, setProfiles] = useState<User[]>([]);
+  const loggedUsername = useContext(LoggedUsernameContext);
 
   useEffect(() => {
     fetch("http://localhost:5050/api/users")
       .then((response) => response.json())
-      .then((users: User[]) => setProfiles(users));
+      .then((users: User[]) => {
+          setLoggedUserId(users.find((user) => user.userName === loggedUsername.username)!.id);
+          setProfiles(users)
+      });
   }, []);
 
   return (
@@ -89,11 +102,12 @@ const ProfileList = ({
 
 const WordState = () => {
   const [selectedUserId, setSelectedUserId] = useState<number>();
+  const [loggedUserId, setLoggedUserId] = useState<number>();
 
   if (!selectedUserId) {
-    return <ProfileList selectUserId={(userId) => setSelectedUserId(userId)} />;
+    return <ProfileList selectUserId={(userId) => setSelectedUserId(userId)} setLoggedUserId={setLoggedUserId} />;
   }
-  return <Auth userId={selectedUserId} />;
+  return <Auth userId={selectedUserId} loggedUserId={loggedUserId} />;
 };
 
 export default WordState;
