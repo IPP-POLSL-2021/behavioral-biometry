@@ -101,7 +101,6 @@ namespace backend.Controllers
 
             var newPrompt1 = new PromptData
             {
-
                 User = accesstoken.user,
                 Prompt = p,
 

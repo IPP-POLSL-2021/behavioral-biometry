@@ -4,6 +4,10 @@ using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
+using System.Text;
+using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace backend.Controllers
 {
@@ -12,8 +16,13 @@ namespace backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private static HttpClient sharedClient = new()
+        {
+            BaseAddress = new Uri("http://127.0.0.1:8000/"),
+        };
         public UserController(ApplicationDbContext context)
         {
+            
             this.context = context;
         }
 
@@ -94,17 +103,52 @@ namespace backend.Controllers
             var userQuery = await context.Users.Where(x => x.Id == id).Include(u => u.FixedPrompt).FirstAsync();
             return Ok(userQuery.FixedPrompt.prompt);
         }
-
         [HttpPost("{id}/fixed")]
-        public async Task<ActionResult> fixedAuthentication(int? userId)
+        public async Task<ActionResult> FixedAuthentication([FromRoute] int? id, PromptDataDto d)
         {
-            return Ok(true);
+            if(id == null)
+            {
+                return BadRequest();
+            }
+            var user = await context.Users.FindAsync(id);
+            
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var requestBody = JsonSerializer.Serialize(d);
+            HttpResponseMessage response = await sharedClient.PostAsJsonAsync($"fixed/{id}", requestBody);
+            var responseString = await response.Content.ReadAsStringAsync();
+            bool result = Convert.ToBoolean(responseString);
+            var resultObject = new Result { prompt = d.Prompt, result = result, userId = (int)id, promptType = PromptType.Fixed };
+            await context.AddAsync(resultObject);
+            await context.SaveChangesAsync();
+            return Ok(result);
         }
 
         [HttpPost("{id}/flex")]
-        public async Task<ActionResult> flexAuthentication(int? userId)
+        public async Task<ActionResult> FlexdAuthentication([FromRoute] int? id, PromptDataDto d)
         {
-            return Ok(true);
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var user = await context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var requestBody = JsonSerializer.Serialize(d);
+            HttpResponseMessage response = await sharedClient.PostAsJsonAsync($"flex/{id}", requestBody);
+            var responseString = await response.Content.ReadAsStringAsync();
+            bool result = Convert.ToBoolean(responseString);
+            var resultObject = new Result { prompt = d.Prompt, result = result, userId = (int)id, promptType = PromptType.Flex };
+            await context.AddAsync(resultObject);
+            await context.SaveChangesAsync();
+            return Ok(result);
         }
 
         [HttpGet("current")]

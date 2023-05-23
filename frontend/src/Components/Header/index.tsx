@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <a onClick={() => { navigate("/") }}>Home page</a>
+      <button onClick={() => { navigate("/") }}>Home page</button>
       <div className={styles.login}>
         {loggedUsername.username && <span>Logged as {loggedUsername.username}</span>}
         <a

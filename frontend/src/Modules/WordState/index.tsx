@@ -11,7 +11,10 @@ const Auth = ({userId}: {userId: number}) => {
   const authenticateFixed = (letters: Itoken[]) => {
     fetch(`http://localhost:5050/api/users/${userId}/fixed`, {
       method: 'POST',
-      body: JSON.stringify(convertPayload(letters))
+      body: JSON.stringify(convertPayload(letters)),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     }).then(r => r.json()).then(d => console.log(d))
     setPromptType('flex')
   }
@@ -19,7 +22,10 @@ const Auth = ({userId}: {userId: number}) => {
   const authenticateFlex = (letters: Itoken[]) => {
     fetch(`http://localhost:5050/api/users/${userId}/flex`, {
       method: 'POST',
-      body: JSON.stringify(convertPayload(letters))
+      body: JSON.stringify(convertPayload(letters)),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     }).then(r => r.json()).then(d => console.log(d))
     setPromptType('done')
   }
