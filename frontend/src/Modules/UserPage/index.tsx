@@ -11,7 +11,7 @@ const UserPage = () => {
     "username",
   ]);
   const [isStarted, setStarted] = useState(false);
-  const getApiUrl = "http://localhost:5050/api/prompt/authenticationProfile";
+  const getApiUrl = "http://srv11.mikr.us:30210/api/prompt/authenticationProfile";
 
   const logout = () => {
     removeCookie("access_token", { path: "/" });

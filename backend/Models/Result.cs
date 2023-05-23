@@ -12,5 +12,6 @@
         public string prompt { get; set; }
         public int userId { get; set; }
         public PromptType promptType { get; set; }
+        public User? loggedUser { get; set; }
     }
 }

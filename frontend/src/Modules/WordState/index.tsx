@@ -60,13 +60,13 @@ const Auth = ({
       {promptType === "fixed" ? (
         <OnlineController
           classNames={styles.main}
-          apiUrl={`http://localhost:5050/api/users/${userId}/prompt`}
+          apiUrl={`http://srv11.mikr.us:40210/api/users/${userId}/prompt`}
           onFinished={authenticateFixed}
         />
       ) : promptType === "flex" ? (
         <OnlineController
           classNames={styles.main}
-          apiUrl={`http://localhost:5050/api/prompt/random`}
+          apiUrl={`http://srv11.mikr.us:40210/api/prompt/random`}
           onFinished={authenticateFlex}
         />
       ) : (
@@ -90,7 +90,7 @@ const ProfileList = ({
   const [{ username }] = useCookies(["username"]);
 
   useEffect(() => {
-    fetch("http://localhost:5050/api/users")
+    fetch("http://srv11.mikr.us:30210/api/users")
       .then((response) => response.json())
       .then((users: User[]) => {
         setLoggedUserId(users.find((user) => user.userName === username)!.id);

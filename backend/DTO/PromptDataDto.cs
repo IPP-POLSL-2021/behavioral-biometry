@@ -5,6 +5,7 @@ namespace backend.DTO
     public class PromptDataDto
     {
         public string Prompt { get; set; } = null!;
+        public int? loggedUserId { get; set; }
         public int H_k1 { get; set; }
         public int DD_k1_k2 { get; set; }
         public int DU_k1_k2 { get; set; }
