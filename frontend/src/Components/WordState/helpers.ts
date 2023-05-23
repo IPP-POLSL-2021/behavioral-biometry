@@ -26,7 +26,7 @@ export function getLastIndex<T>(array: T[], key: (item: T) => boolean) {
   return last ?? -1;
 }
 
-function flattenArrayOfObjects(array: any[]) {
+function flattenArrayOfObjects<T extends object>(array: T[]) {
   return array.reduce(
     (accumulator, current) => ({ ...current, ...accumulator }),
     {},

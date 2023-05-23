@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
 import { Itoken } from "../interfaces";
 
@@ -7,7 +7,6 @@ import WordState from "..";
 
 const OfflineController = ({ prompt }: { prompt: string }) => {
   const onCompleted = useCallback((letters: Itoken[]) => {
-    // @ts-ignore
     const payload = convertPayload(letters);
     console.log(payload);
   }, []);

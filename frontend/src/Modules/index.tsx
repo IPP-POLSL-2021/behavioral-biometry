@@ -8,7 +8,6 @@ import UserPage from "./UserPage";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { useState } from "react";
 
 const Layout = ({ children }: { children: JSX.Element }) => {
   return (
@@ -19,7 +18,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   );
 };
 const ProtectedContent = ({ children }: { children: JSX.Element }) => {
-  const [cookies, setCookie] = useCookies(["access_token"]);
+  const [cookies, setCookie] = useCookies(["access_token", "username"]);
 
   return cookies.access_token ? children : <LoginPage setCookie={setCookie} />;
 };

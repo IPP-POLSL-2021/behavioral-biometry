@@ -26,7 +26,6 @@ function RegisterPage() {
     })
       .then((res) => {
         if (!res.ok) return Promise.reject(res);
-        console.log("Rejestracja sie powiodla");
         navigate("/user");
       })
       .catch((err) => {
