@@ -1,27 +1,28 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 4rem;
 }
 
 img {
-    filter: invert(51%) sepia(98%) saturate(391%) hue-rotate(9deg) brightness(92%) contrast(87%);
+  filter: invert(51%) sepia(98%) saturate(391%) hue-rotate(9deg) brightness(92%)
+    contrast(87%);
 
-    &:hover {
-        cursor: pointer;
-        opacity: 0.6;
-    }
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
 
-    &:active {
-        opacity: 0.3;
-    }
+  &:active {
+    opacity: 0.3;
+  }
 }
 
 .login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  gap: 20px;
 }
