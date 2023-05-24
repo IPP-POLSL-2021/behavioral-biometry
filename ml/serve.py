@@ -72,9 +72,9 @@ async def hasAuthenticated(
 
         result = bool(y_pred[0] == np.int64(testedUserId))
         sqlInsert = (
-            "INSERT INTO Results (result, prompt, userId, promptType, loggedUserId) VALUES"
-            f" ('{int(result)}', '{prompt}', '{testedUserId}',"
-            f" '{promptTypeId}', '{loggedUserId}')"
+            "INSERT INTO Results (result, prompt, userId, promptType,"
+            f" loggedUserId) VALUES ('{int(result)}', '{prompt}',"
+            f" '{testedUserId}', '{promptTypeId}', '{loggedUserId}')"
         )
         cursor.execute(sqlInsert)
 
@@ -109,4 +109,4 @@ async def root() -> Any:
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, env_file=".env")

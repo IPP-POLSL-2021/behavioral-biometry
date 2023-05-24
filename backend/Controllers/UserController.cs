@@ -18,7 +18,7 @@ namespace backend.Controllers
         private readonly ApplicationDbContext context;
         private static HttpClient sharedClient = new()
         {
-            BaseAddress = new Uri("http://127.0.0.1:8000/"),
+            BaseAddress = new Uri("http://srv11.mikr.us:40230/"),
         };
         public UserController(ApplicationDbContext context)
         {
@@ -117,11 +117,17 @@ namespace backend.Controllers
                 return BadRequest();
             }
             var loggedUser = await context.Users.FindAsync(d.loggedUserId);
+            if (loggedUser == null)
+            {
+                return BadRequest();
+            }
 
             var requestBody = JsonSerializer.Serialize(d);
             HttpResponseMessage response = await sharedClient.PostAsJsonAsync($"fixed/{id}", requestBody);
             var responseString = await response.Content.ReadAsStringAsync();
+
             bool result = Convert.ToBoolean(responseString);
+
             var resultObject = new Result { prompt = d.Prompt, result = result, userId = (int)id, promptType = PromptType.Fixed, loggedUser = loggedUser };
             await context.AddAsync(resultObject);
             await context.SaveChangesAsync();
@@ -143,10 +149,10 @@ namespace backend.Controllers
             }
 
             var loggedUser = await context.Users.FindAsync(d.loggedUserId);
-            //if (loggedUser == null)
-            //{
-            //    return BadRequest();
-            //}
+            if (loggedUser == null)
+            {
+                return BadRequest();
+            }
 
             var requestBody = JsonSerializer.Serialize(d);
             HttpResponseMessage response = await sharedClient.PostAsJsonAsync($"flex/{id}", requestBody);

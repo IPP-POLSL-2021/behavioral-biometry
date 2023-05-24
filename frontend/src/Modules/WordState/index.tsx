@@ -27,7 +27,7 @@ const Auth = ({
     const payload = convertPayload(letters);
     payload['loggedUserId'] = loggedUserId;
 
-    fetch(`http://127.0.0.1:8000/fixed/${userId}`, {
+    fetch(`http://srv11.mikr.us:40230/fixed/${userId}`, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: {
@@ -43,7 +43,7 @@ const Auth = ({
     const payload = convertPayload(letters);
     payload['loggedUserId'] = loggedUserId;
 
-    fetch(`http://127.0.0.1:8000/flex/${userId}`, {
+    fetch(`http://srv11.mikr.us:40230/flex/${userId}`, {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: {
@@ -60,13 +60,13 @@ const Auth = ({
       {promptType === "fixed" ? (
         <OnlineController
           classNames={styles.main}
-          apiUrl={`http://srv11.mikr.us:40210/api/users/${userId}/prompt`}
+          apiUrl={`http://srv11.mikr.us:30210/api/users/${userId}/prompt`}
           onFinished={authenticateFixed}
         />
       ) : promptType === "flex" ? (
         <OnlineController
           classNames={styles.main}
-          apiUrl={`http://srv11.mikr.us:40210/api/prompt/random`}
+          apiUrl={`http://srv11.mikr.us:30210/api/prompt/random`}
           onFinished={authenticateFlex}
         />
       ) : (
