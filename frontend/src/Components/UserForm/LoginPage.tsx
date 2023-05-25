@@ -5,8 +5,17 @@ import UserForm from ".";
 
 import styles from "./style.module.scss";
 import { Status } from "./types";
+import { CookieSetOptions } from "universal-cookie";
 
-function LoginPage({ setCookie }: { setCookie: any }) {
+function LoginPage({
+  setCookie,
+}: {
+  setCookie: (
+    name: "access_token" | "username",
+    value: string,
+    options?: CookieSetOptions | undefined,
+  ) => void;
+}) {
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [status, setStatus] = useState<Status>("typing");
   const navigate = useNavigate();
@@ -26,7 +35,7 @@ function LoginPage({ setCookie }: { setCookie: any }) {
         return res.ok ? res.json() : Promise.reject(res);
       })
       .then((token) => {
-        let expires = new Date();
+        const expires = new Date();
         expires.setTime(expires.getTime() + 15 * 60 * 1000);
         setCookie("access_token", token, { path: "/", expires });
         setCookie("username", loginData.username, { path: "/", expires });
@@ -61,7 +70,7 @@ function LoginPage({ setCookie }: { setCookie: any }) {
         status={status}
       />
       <span style={{ textAlign: "center", marginTop: "1rem" }}>
-        Don't have account yet?{" "}
+        Don&apos;t have account yet?
         <a onClick={redirectToRegister}>
           <br />
           sign up here

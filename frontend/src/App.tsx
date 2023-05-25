@@ -1,4 +1,4 @@
-import ModuleRouter from './Modules';
+import ModuleRouter from "./Modules";
 
 export default function App() {
   return (

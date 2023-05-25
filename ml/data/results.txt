@@ -1,0 +1,79 @@
+Nearest Neighbors:
+
+Iris (1.0, 0.00228)
+Wine (0.7222, 0.00243)
+Breast Cancer (0.8421, 0.02805)
+Digits (0.975, 0.04299)
+KeyStrokeDynamics (0.8816, 0.77941)
+
+Linear SVM:
+
+Iris (0.8333, 0.00028)
+Wine (0.6111, 0.00031)
+Breast Cancer (0.7895, 0.00152)
+Digits (0.9861, 0.00841)
+KeyStrokeDynamics (0.7583, 6.63297)
+
+RBF SVM:
+
+Iris (0.9667, 0.00025)
+Wine (0.5833, 0.0003)
+Breast Cancer (0.6667, 0.00132)
+Digits (0.9167, 0.03732)
+KeyStrokeDynamics (0.8147, 6.79052)
+
+Decision Tree:
+
+Iris (0.9333, 0.0001)
+Wine (0.8056, 0.0001)
+Breast Cancer (0.807, 0.00038)
+Digits (0.6278, 0.00022)
+KeyStrokeDynamics (0.2588, 0.00126)
+
+Random Forest:
+
+Iris (0.8333, 0.00131)
+Wine (0.9167, 0.00132)
+Breast Cancer (0.6316, 0.00122)
+Digits (0.775, 0.00153)
+KeyStrokeDynamics (0.6007, 0.01432)
+
+Neural Net:
+
+Iris (0.9333, 0.00027)
+Wine (0.6111, 0.00028)
+Breast Cancer (0.8246, 0.00038)
+Digits (0.9639, 0.00094)
+KeyStrokeDynamics (0.4137, 0.01124)
+
+AdaBoost:
+
+Iris (0.9667, 0.00917)
+Wine (0.8611, 0.006)
+Breast Cancer (0.7456, 0.00626)
+Digits (0.3306, 0.00897)
+KeyStrokeDynamics (0.0662, 0.18284)
+
+Naive Bayes:
+
+Iris (1.0, 0.00019)
+Wine (0.9167, 0.00022)
+Breast Cancer (0.7193, 0.00023)
+Digits (0.8139, 0.00105)
+KeyStrokeDynamics (0.6718, 0.02359)
+
+Logistic Regression:
+
+Iris (0.8, 0.00016)
+Wine (0.5556, 0.00028)
+Breast Cancer (0.8509, 0.00032)
+Digits (0.9639, 0.00042)
+KeyStrokeDynamics (0.7446, 0.00258)
+
+Gradient Boosting:
+
+Iris (1.0, 0.04737)
+Wine (0.9167, 0.04013)
+Breast Cancer (0.5789, 0.02043)
+Digits (0.9778, 0.17959)
+KeyStrokeDynamics (0.9424, 0.62328)

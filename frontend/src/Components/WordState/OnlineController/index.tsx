@@ -56,7 +56,7 @@ const OnlineController = ({
         fetchNew();
       }
     },
-    [fetchNew, onFinished, continueAfter]
+    [fetchNew, onFinished, continueAfter],
   );
 
   if (connectionState == "fetching") {

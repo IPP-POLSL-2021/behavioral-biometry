@@ -6,33 +6,38 @@ import { getLastIndex } from "./helpers";
 
 import styles from "./style.module.scss";
 
-const Token: React.FC<TokenProps> = ({symbol, downTimestamp, upTimestamp, isCursorPresent}) => {
+const Token: React.FC<TokenProps> = ({
+  symbol,
+  downTimestamp,
+  upTimestamp,
+  isCursorPresent,
+}) => {
   const classNames = `
     ${styles.letter}
-    ${upTimestamp ? styles.letterUp : downTimestamp ? styles.letterDown : ''}
+    ${upTimestamp ? styles.letterUp : downTimestamp ? styles.letterDown : ""}
     ${isCursorPresent && styles.cursorPresent}
-    ${symbol === ' ' && styles.space}
+    ${symbol === " " && styles.space}
   `;
 
-  return (
-    <span
-      className={classNames}
-    >
-      {symbol}
-    </span>
-  )
-}
+  return <span className={classNames}>{symbol}</span>;
+};
 
-const WordStateView: React.FC<{letters: Itoken[], onCompleted: (letters: Itoken[]) => void, classNames?: string}> = ({ letters, onCompleted, classNames }) => {
-  const lastDownIndex = getLastIndex(letters, (letter) => Boolean(letter.downTimestamp));
+const WordStateView: React.FC<{
+  letters: Itoken[];
+  onCompleted: (letters: Itoken[]) => void;
+  classNames?: string;
+}> = ({ letters, onCompleted, classNames }) => {
+  const lastDownIndex = getLastIndex(letters, (letter) =>
+    Boolean(letter.downTimestamp),
+  );
   useEffect(() => {
-    if(letters.every(v => v.downTimestamp && v.upTimestamp)) {
-      onCompleted(letters)
+    if (letters.every((v) => v.downTimestamp && v.upTimestamp)) {
+      onCompleted(letters);
     }
-  }, [letters])
+  }, [letters]);
 
   return (
-    <div className={`${styles.word} ${classNames ?? ''}`}>
+    <div className={`${styles.word} ${classNames ?? ""}`}>
       <Token symbol="" isCursorPresent={lastDownIndex === -1} />
       {letters?.map((letter, idx) => (
         <Token
@@ -42,7 +47,7 @@ const WordStateView: React.FC<{letters: Itoken[], onCompleted: (letters: Itoken[
         />
       ))}
     </div>
-  )
+  );
 };
 
 export default WordStateView;

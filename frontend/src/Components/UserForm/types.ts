@@ -1,6 +1,6 @@
 export type FormData = {
-  username: string,
-  password: string,
-}
+  username: string;
+  password: string;
+};
 
-export type Status = "typing" | "submitting" | "error"
+export type Status = "typing" | "submitting" | "error";

@@ -1,9 +1,9 @@
 export type Itoken = {
-  symbol: string,
-  downTimestamp?: number,
-  upTimestamp?: number,
-}
+  symbol: string;
+  downTimestamp?: number;
+  upTimestamp?: number;
+};
 
 export interface TokenProps extends Itoken {
-  isCursorPresent: boolean,
-};
+  isCursorPresent: boolean;
+}

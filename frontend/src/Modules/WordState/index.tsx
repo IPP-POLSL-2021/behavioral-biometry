@@ -24,7 +24,7 @@ const Auth = ({
   const [flexAuth, setFlexAuth] = useState(false);
 
   const authenticateFixed = (letters: Itoken[]) => {
-    const payload = convertPayload(letters);
+    const payload: any = convertPayload(letters);
     payload['loggedUserId'] = loggedUserId;
 
     fetch(`http://srv11.mikr.us:40230/fixed/${userId}`, {
@@ -40,7 +40,7 @@ const Auth = ({
   };
 
   const authenticateFlex = (letters: Itoken[]) => {
-    const payload = convertPayload(letters);
+    const payload: any = convertPayload(letters);
     payload['loggedUserId'] = loggedUserId;
 
     fetch(`http://srv11.mikr.us:40230/flex/${userId}`, {

@@ -25,7 +25,9 @@ namespace backend.Controllers
         [HttpGet("random")]
         public OkObjectResult getRandom()
         {
-            return Ok(GetRandomAlphaNumeric(10));
+            var prompt = context.fixedPrompts.OrderBy(r => EF.Functions.Random()).Take(1).First().prompt;
+            return Ok(prompt);
+            //return Ok(GetRandomAlphaNumeric(10));
         }
 
         [HttpGet("fixed")]
@@ -65,7 +67,8 @@ namespace backend.Controllers
             }
             if(randomPrompts < x)
             {
-                return Ok(GetRandomAlphaNumeric(10));
+                var prompt = context.fixedPrompts.OrderBy(r => EF.Functions.Random()).Take(1).First().prompt;
+                return Ok(prompt);
             }
             return NoContent();
         }
