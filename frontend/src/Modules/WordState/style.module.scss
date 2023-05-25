@@ -10,3 +10,15 @@
 .result-text {
   font-size: 2rem;
 }
+
+.list {
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8rem;
+  li {
+    list-style: circle;
+    cursor: pointer;
+  }
+}

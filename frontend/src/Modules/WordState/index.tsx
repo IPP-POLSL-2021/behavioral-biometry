@@ -99,15 +99,17 @@ const ProfileList = ({
   }, []);
 
   return (
-    <div>
-      Authenticate as:
-      <ul>
-        {profiles.map(({ id, userName }) => (
-          <li key={id} onClick={() => selectUserId(id)}>
-            {userName}
-          </li>
-        ))}
-      </ul>
+    <div className={styles.list}>
+      <div className={styles.listContent}>
+        Authenticate as:
+        <ul>
+          {profiles.map(({ id, userName }) => (
+            <li key={id} onClick={() => selectUserId(id)}>
+              {userName}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

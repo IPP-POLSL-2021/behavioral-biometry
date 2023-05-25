@@ -30,7 +30,7 @@ function LoginPage({ setCookie }: { setCookie: any }) {
         expires.setTime(expires.getTime() + 15 * 60 * 1000);
         setCookie("access_token", token, { path: "/", expires });
         setCookie("username", loginData.username, { path: "/", expires });
-        navigate("/");
+        navigate("/user");
       })
       .catch((err) => {
         console.error(err);

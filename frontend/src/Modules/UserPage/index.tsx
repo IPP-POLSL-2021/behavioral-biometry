@@ -4,19 +4,16 @@ import { useState } from "react";
 import OnlineController from "../../Components/WordState/OnlineController";
 import { Itoken } from "../../Components/WordState/interfaces";
 import { convertPayload } from "../../Components/WordState/helpers";
+import styles from './style.module.scss';
 
 const UserPage = () => {
-  const [{ access_token }, , removeCookie] = useCookies([
+  const [{ access_token }] = useCookies([
     "access_token",
     "username",
   ]);
+
   const [isStarted, setStarted] = useState(false);
   const getApiUrl = "http://srv11.mikr.us:30210/api/prompt/authenticationProfile";
-
-  const logout = () => {
-    removeCookie("access_token", { path: "/" });
-    removeCookie("username", { path: "/" });
-  };
 
   const onFinished = (letters: Itoken[]) => {
     const payload = convertPayload(letters);
@@ -33,20 +30,25 @@ const UserPage = () => {
   return (
     <div>
       {isStarted ? (
-        <>
+        <div className={styles.mainCont}>
           <OnlineController
             restartOnCompleted
             continueAfter
             apiUrl={getApiUrl}
             onFinished={onFinished}
+            classNames={styles.main}
           />
-        </>
+        </div>
       ) : (
-        <button onClick={() => setStarted(true)}>
-          Create keystrokes profile
-        </button>
+        <div className={styles.main1}>
+          <div onClick={() => setStarted(true)}>
+            Create keystrokes profile
+          </div>
+        </div>
       )}
-      <a onClick={logout}>log out</a>
+      <div>
+        
+      </div>
     </div>
   );
 };

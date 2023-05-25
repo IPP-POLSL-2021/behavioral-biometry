@@ -29,7 +29,9 @@ const router = createBrowserRouter([
     path: "/wordstate",
     element: (
       <Layout>
-        <WordState />
+        <ProtectedContent>
+          <WordState />
+        </ProtectedContent>
       </Layout>
     ),
   },
@@ -64,7 +66,5 @@ const router = createBrowserRouter([
 const ModuleRouter = () => {
   return <RouterProvider router={router} />;
 };
-
-// TODO: WordStateContoller zależny od stanu logowania użytkownika
 
 export default ModuleRouter;
