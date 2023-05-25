@@ -17,5 +17,7 @@ namespace backend.Context
         public DbSet<Prompt> prompts { get; set; }
         public DbSet<PromptData> PromptData { get; set; }
         public DbSet<Result> Results { get; set; }
+
+        public DbSet<fixedPrompts> fixedPrompts { get; set; }
     }
 }

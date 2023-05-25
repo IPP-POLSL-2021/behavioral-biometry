@@ -39,10 +39,9 @@ namespace backend.Controllers
             {
                 return BadRequest("username taken");
             }
-
             var prompt = new Prompt
             {
-                prompt = GetRandomAlphaNumeric(10)
+                prompt = context.fixedPrompts.OrderBy(r => EF.Functions.Random()).Take(1).First().prompt
             };
 
             var newUser = new User
