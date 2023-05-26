@@ -4,16 +4,13 @@ import { useState } from "react";
 import OnlineController from "../../Components/WordState/OnlineController";
 import { Itoken } from "../../Components/WordState/interfaces";
 import { convertPayload } from "../../Components/WordState/helpers";
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
 const UserPage = () => {
-  const [{ access_token }] = useCookies([
-    "access_token",
-    "username",
-  ]);
+  const [{ access_token }] = useCookies(["access_token", "username"]);
 
   const [isStarted, setStarted] = useState(false);
-  const getApiUrl = "http://srv11.mikr.us:30210/api/prompt/authenticationProfile";
+  const getApiUrl = "http://localhost:5050/api/prompt/authenticationProfile";
 
   const onFinished = (letters: Itoken[]) => {
     const payload = convertPayload(letters);
@@ -41,14 +38,10 @@ const UserPage = () => {
         </div>
       ) : (
         <div className={styles.main1}>
-          <div onClick={() => setStarted(true)}>
-            Create keystrokes profile
-          </div>
+          <div onClick={() => setStarted(true)}>Create keystrokes profile</div>
         </div>
       )}
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   );
 };

@@ -27,7 +27,6 @@ namespace backend.Controllers
         {
             var prompt = context.fixedPrompts.OrderBy(r => EF.Functions.Random()).Take(1).First().prompt;
             return Ok(prompt);
-            //return Ok(GetRandomAlphaNumeric(10));
         }
 
         [HttpGet("fixed")]

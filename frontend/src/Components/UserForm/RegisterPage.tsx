@@ -16,7 +16,7 @@ function RegisterPage() {
   const register = (e: FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
-    fetch("http://srv11.mikr.us:30210/api/users", {
+    fetch("http://localhost:5050/api/users", {
       method: "POST",
       headers: {
         Accept: "application/json",

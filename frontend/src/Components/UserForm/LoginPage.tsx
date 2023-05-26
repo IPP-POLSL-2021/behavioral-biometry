@@ -23,7 +23,7 @@ function LoginPage({
   const login = (e: FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
-    fetch("http://srv11.mikr.us:30210/api/users/auth", {
+    fetch("http://localhost:5050/api/users/auth", {
       method: "POST",
       headers: {
         Accept: "application/json",
