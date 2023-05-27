@@ -1,0 +1,20 @@
+version: '3'
+services:
+  frontend: 
+    build: ./frontend
+    ports: 
+      - "5137:5137"
+    container_name: frontend-docker
+    restart: always
+  backend:
+    build: ./backend
+    ports:
+      - "5050:80"
+    container_name: backend-docker
+    restart: always
+  ml:
+    build: ./ml
+    ports:
+    - "8000:8000"
+    container_name: ml-docker
+    restart: always
