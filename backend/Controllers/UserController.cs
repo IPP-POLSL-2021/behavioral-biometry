@@ -18,7 +18,7 @@ namespace backend.Controllers
         private readonly ApplicationDbContext context;
         private static HttpClient sharedClient = new()
         {
-            BaseAddress = new Uri("http://srv11.mikr.us:40230/"),
+            //BaseAddress = new Uri("http://srv11.mikr.us:40230/"),
         };
         public UserController(ApplicationDbContext context)
         {

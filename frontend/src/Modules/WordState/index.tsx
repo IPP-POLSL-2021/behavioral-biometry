@@ -25,13 +25,13 @@ const Auth = ({
 
   const authenticateFixed = (letters: Itoken[]) => {
     const payload: any = convertPayload(letters);
-    payload['loggedUserId'] = loggedUserId;
+    payload["loggedUserId"] = loggedUserId;
 
-    fetch(`http://srv11.mikr.us:40230/fixed/${userId}`, {
-      method: 'POST',
+    fetch(`http://localhost:8000/fixed/${userId}`, {
+      method: "POST",
       body: JSON.stringify(payload),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
@@ -41,13 +41,13 @@ const Auth = ({
 
   const authenticateFlex = (letters: Itoken[]) => {
     const payload: any = convertPayload(letters);
-    payload['loggedUserId'] = loggedUserId;
+    payload["loggedUserId"] = loggedUserId;
 
-    fetch(`http://srv11.mikr.us:40230/flex/${userId}`, {
-      method: 'POST',
+    fetch(`http://localhost:8000/flex/${userId}`, {
+      method: "POST",
       body: JSON.stringify(payload),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
@@ -60,13 +60,13 @@ const Auth = ({
       {promptType === "fixed" ? (
         <OnlineController
           classNames={styles.main}
-          apiUrl={`http://srv11.mikr.us:30210/api/users/${userId}/prompt`}
+          apiUrl={`http://localhost:5050/api/users/${userId}/prompt`}
           onFinished={authenticateFixed}
         />
       ) : promptType === "flex" ? (
         <OnlineController
           classNames={styles.main}
-          apiUrl={`http://srv11.mikr.us:30210/api/prompt/random`}
+          apiUrl={`http://localhost:5050/api/prompt/random`}
           onFinished={authenticateFlex}
         />
       ) : (
@@ -90,7 +90,7 @@ const ProfileList = ({
   const [{ username }] = useCookies(["username"]);
 
   useEffect(() => {
-    fetch("http://srv11.mikr.us:30210/api/users")
+    fetch("http://localhost:5050/api/users")
       .then((response) => response.json())
       .then((users: User[]) => {
         setLoggedUserId(users.find((user) => user.userName === username)!.id);

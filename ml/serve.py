@@ -75,6 +75,7 @@ async def hasAuthenticated(
         y_pred = model.predict(np.array([testedPrompt.to_numpy()]))
 
         result = bool(y_pred[0] == np.int64(testedUserId))
+        print(testedUserId, y_pred[0], result)
         sqlInsert = (
             "INSERT INTO Results (result, prompt, userId, promptType,"
             f" loggedUserId) VALUES ('{int(result)}', '{prompt}',"
