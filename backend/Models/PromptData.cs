@@ -9,6 +9,7 @@ namespace backend.Models
         public int? PromptId { get; set; }
         public virtual Prompt Prompt { get; set; } = null!;
         public User User { get; set; } = null!;
+        public bool IsFixedUserPrompt { get; set; }
         public int H_k1 { get; set; }
         public int DD_k1_k2 { get; set; }
         public int DU_k1_k2 { get; set; }
