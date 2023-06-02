@@ -99,12 +99,19 @@ namespace backend.Controllers
                 return Unauthorized();
             }
 
-            var p = await context.prompts.Where(p => p.prompt == prompt.Prompt).FirstOrDefaultAsync();
+            var userPrompt = await context.Users.Include(t => t.FixedPrompt).Where(t => t.Id == accesstoken.user.Id).FirstOrDefaultAsync();
 
+            if (userPrompt == null)
+            {
+                return BadRequest();
+            }
+            var p = await context.prompts.Where(p => p.prompt == prompt.Prompt).FirstOrDefaultAsync();
+            
             var newPrompt1 = new PromptData
             {
                 User = accesstoken.user,
                 Prompt = p,
+                IsFixedUserPrompt = userPrompt.FixedPrompt.prompt == prompt.Prompt,
 
                 H_k1 = prompt.H_k1,
 
