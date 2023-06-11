@@ -63,7 +63,9 @@ const router = createBrowserRouter([
 ]);
 
 const ModuleRouter = () => {
-  return <RouterProvider router={router} />;
+  return (
+      <RouterProvider router={router} />
+  )
 };
 
 export default ModuleRouter;
