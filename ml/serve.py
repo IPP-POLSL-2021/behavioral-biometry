@@ -15,7 +15,9 @@ sql = (
     "SELECT UserId, H_k1, DD_k1_k2, DU_k1_k2, H_k2, DD_k2_k3, DU_k2_k3, H_k3,"
     " DD_k3_k4, DU_k3_k4, H_k4, DD_k4_k5, DU_k4_k5, H_k5, DD_k5_k6, DU_k5_k6,"
     " H_k6, DD_k6_k7, DU_k6_k7, H_k7, DD_k7_k8, DU_k7_k8, H_k8, DD_k8_k9,"
-    " DU_k8_k9, H_k9, DD_k9_k10, DU_k9_k10, H_k10, (u.FixedPromptId = PromptData.PromptId)=1 AND PromptId IS NOT NULL AS IsFixed FROM `PromptData` JOIN `Users` AS u ON UserId=u.Id"
+    " DU_k8_k9, H_k9, DD_k9_k10, DU_k9_k10, H_k10, (u.FixedPromptId ="
+    " PromptData.PromptId)=1 AND PromptId IS NOT NULL AS IsFixed FROM"
+    " `PromptData` JOIN `Users` AS u ON UserId=u.Id"
 )
 
 app = FastAPI()
@@ -59,11 +61,10 @@ async def hasAuthenticated(
 
         prompt = testedPrompt["prompt"]
         del testedPrompt["prompt"]
-        if promptType == "fixed":
-            testedPrompt = testedPrompt[testedPrompt["IsFixed"] == 1]
-        else:
-            testedPrompt = testedPrompt[testedPrompt["IsFixed"] == 0]
-        del testedPrompt["IsFixed"]
+        userPrompts = userPrompts[
+            userPrompts["IsFixed"] == (1 if promptType == "fixed" else 0)
+        ]
+        del userPrompts["IsFixed"]
 
         # TODO: dodać normalizacje x'ów?
         x, y = (

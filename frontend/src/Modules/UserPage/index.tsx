@@ -41,14 +41,10 @@ const UserPage = () => {
         </div>
       ) : (
         <div className={styles.main1}>
-          <div onClick={() => setStarted(true)}>
-            Create keystrokes profile
-          </div>
+          <div onClick={() => setStarted(true)}>Create keystrokes profile</div>
         </div>
       )}
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   );
 };
